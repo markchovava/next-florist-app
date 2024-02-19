@@ -230,7 +230,7 @@ export default function ProductView({ id, fourProducts }){
               <div key={i} className='w-[100%] pt-4 pb-5 px-3 bg-white drop-shadow-md'>
                   <div><h4 className='font-bold text-2xl pb-2'>{item.name}</h4></div>
                   <div className='w-[100%] aspect-[4/5] rounded bg-slate-300'>
-                      <img className='object-fill w-[100%] h-[100%]' src={baseURL + item.thumbnail} />
+                      <img className='object-cover w-[100%] h-[100%]' src={baseURL + item.thumbnail} />
                   </div>
                   <div className='pt-4 flex'> 
                       <Link href={`/product/${item.id}`} className='group py-3 px-5 rounded-md flex items-center justify-center gap-1 text-sm bg-gradient-to-br from-pink-600 to-pink-400 text-white '>
