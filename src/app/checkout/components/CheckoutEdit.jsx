@@ -73,19 +73,6 @@ export default function CheckoutEdit() {
         }   
     } 
 
-    /* CHECK EMAIL IN THE DATABASE */
-    async function checkEmail() {
-        try{
-          const result = await axios.post(`${baseURL}check-email`, user?.email, config)
-          .then((response) => {
-            setErrorMsg({...errorMsg, email: response.data?.message});
-          })
-        } catch (error) {
-            console.error(`Error: ${error}`);
-            console.error(`Error Message: ${error.message}`);
-            console.error(`Error Response: ${error.response}`);
-        } 
-    }
 
     async function postData() {
         setIsSubmit(false);
