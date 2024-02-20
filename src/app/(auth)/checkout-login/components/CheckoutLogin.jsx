@@ -10,7 +10,7 @@ import { CiCircleRemove } from "react-icons/ci";
 
 
 
-const Login = () => {
+const CheckoutLogin = () => {
     const router = useRouter();
     const [auth, setAuth] = useState();
     const [role, setRole] = useState();
@@ -24,6 +24,10 @@ const Login = () => {
         headers: { "Content-Type": "application/json" } 
     }
 
+    const handleInput = (e) => {
+        setData({...data, [e.target.name]: e.target.value})
+    }
+
     /* POST DATA */
     async function postData() {
         setIsSubmit(false)
@@ -33,13 +37,11 @@ const Login = () => {
             setIsError(true)
             return;
         }
-
         if(data.password === ''){
             setErrorMsg('Password is required.')
             setIsError(true)
             return;
         }
-
 
         try{
         const result = await axios.post(`${baseURL}login/`, data, config)
@@ -52,7 +54,7 @@ const Login = () => {
                 console.log(response.data?.auth_token)
                 setAuthToken(response.data?.auth_token);
                 setRoleToken(response.data?.role_level);
-                router.push('/')  
+                router.push('/checkout')  
             });
         } catch (error) {
         console.error(`Error: ${error}`)
@@ -81,7 +83,7 @@ const Login = () => {
                 <input 
                     type='text'
                     name='email'
-                    onChange={(e) => setData({...data, email: e.target.value})}
+                    onChange={handleInput}
                     className='w-[100%] outline-none rounded-lg border border-slate-300 px-3 py-4' />
             </div>
             <div className='pb-4 w-[100%]'>
@@ -89,7 +91,7 @@ const Login = () => {
                 <input 
                     type='password' 
                     name='password'
-                    onChange={(e) => setData({...data, password: e.target.value})}
+                    onChange={handleInput}
                     className='w-[100%] outline-none rounded-lg border border-slate-300 px-3 py-4' />
             </div>
             <div className='pb-4 w-[100%]'>
@@ -110,4 +112,4 @@ const Login = () => {
   )
 }
 
-export default Login
+export default CheckoutLogin

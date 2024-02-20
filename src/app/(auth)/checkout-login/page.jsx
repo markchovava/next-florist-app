@@ -1,14 +1,14 @@
-import Link from "next/link"
-import Footer from "@/components/Footer"
-import Header from "@/components/Header"
-import { GoChevronRight } from "react-icons/go"
-import { IoHomeOutline } from "react-icons/io5"
-import OrderTrack from "./components/OrderTrack"
+import Header from '@/components/Header'
+import { GoChevronRight } from 'react-icons/go'
+import { IoHomeOutline } from 'react-icons/io5'
+import Link from 'next/link'
+import Footer from '@/components/Footer'
+import CheckoutLogin from './components/CheckoutLogin'
+
 
 const page = () => {
   return (
-    <div>
-         <div>
+    <>
         <Header />
         {/* Breadcrumbs */}
         <section className='w-[100%] h-auto bg-slate-50'>
@@ -19,21 +19,18 @@ const page = () => {
                 <GoChevronRight />
                 </li>
                 <li className='flex items-center justify-start gap-1'>
-                <Link href='/order-track'>Track Orders</Link>
+                <Link href=''>Contact Us</Link>
                 </li>
             </ul>
         </section>
-        {/* Title */}
+        {/* TITLE */}
         <section className='w-[100%] h-auto flex items-center justify-center'>
-            <h1 className='text-[4rem] font-black pt-[3rem] pb-[1rem]'>Track Order</h1>
+            <h1 className='text-[4rem] font-black pt-[3rem] pb-[1.5rem]'>Login</h1>
         </section>
-        
-        {/* MAIN CONTENT */}
-        <OrderTrack />
-        {/* FOOTER */}
+
+        <CheckoutLogin />
         <Footer />
-    </div>
-    </div>
+    </>
   )
 }
 

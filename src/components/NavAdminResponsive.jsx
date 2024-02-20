@@ -25,7 +25,7 @@ export default function NavAdminResponsive() {
     const [isUser, setIsUser] = useState(false);
     const [isProductOption, setIsProductOption] = useState(false);
     const { getAuthToken, removeAuthToken } = tokenAuth();
-    const { removeRole, getRole } = tokenRole()
+    const { removeRoleToken, getRoleToken } = tokenRole()
     const [isOpen, setIsOpen] = useState(false);
 
 
@@ -42,7 +42,7 @@ export default function NavAdminResponsive() {
         const result = await axiosClientAPI.get(`logout/`, config)
             .then((response) => {
                 removeAuthToken();
-                removeRole();
+                removeRoleToken();
                 router.push(`/login`) 
             
             })
@@ -95,18 +95,18 @@ export default function NavAdminResponsive() {
                                             exit={{ opacity:1 }}
                                             transition={{ duration: 0.6, type:'spring' }}
                                             className="top-[135%] flex flex-col items-center justify-center w-[100vw] bg-slate-900 relative z-10 pb-2">
-                                            {getRole() <= 3 &&
+                                            {getRoleToken() <= 3 &&
                                                 <li className="px-[0.5rem] py-1 hover:bg-slate-900">
                                                     <Link href='/admin/app-info' className=" w-[100%]">AppInfo</Link>
                                                 </li>
                                             }
-                                            {getRole() <= 1 && 
+                                            {getRoleToken() <= 1 && 
                                                 <li className="px-[0.5rem] py-1 hover:bg-slate-900">
                                                     <Link href='/admin/role' className=" w-[100%] h-[100%]">
                                                         Roles</Link>
                                                 </li>
                                             }
-                                            {getRole() <= 2 && 
+                                            {getRoleToken() <= 2 && 
                                                 <li className="px-[0.5rem] py-1 hover:bg-slate-900">
                                                     <Link href='/admin/delivery' className=" w-[100%] h-[100%]">Delivery</Link>
                                                 </li>
@@ -117,7 +117,7 @@ export default function NavAdminResponsive() {
                                 }
                             </li>
                             {/* USERS */}
-                            {getRole() <= 2 &&
+                            {getRoleToken() <= 2 &&
                                 <li className="relative"
                                     onClick={() => {
                                         setIsSetting(false);
@@ -170,7 +170,7 @@ export default function NavAdminResponsive() {
                                             exit={{ opacity:1 }}
                                             transition={{ duration: 0.6, type:'spring' }}
                                             className="top-[135%] flex flex-col items-center justify-center w-[100vw] bg-slate-900 relative z-10 pb-2">
-                                            {getRole() <= 2 && 
+                                            {getRoleToken() <= 2 && 
                                                 <li className="px-[0.5rem] py-1 hover:bg-slate-900">
                                                     <Link href='/admin/category/add' className=" w-[100%]">Add Category</Link>
                                                 </li>
@@ -204,7 +204,7 @@ export default function NavAdminResponsive() {
                                             exit={{ opacity:1 }}
                                             transition={{ duration: 0.6, type:'spring' }}
                                             className="top-[135%] flex flex-col items-center justify-center w-[100vw] bg-slate-900 relative z-10 pb-2">
-                                            {getRole() <= 2 && 
+                                            {getRoleToken() <= 2 && 
                                                 <li className="px-[0.5rem] py-1 hover:bg-slate-900">
                                                     <Link href='/admin/product/add' className=" w-[100%]">Add Product</Link>
                                                 </li>
@@ -238,7 +238,7 @@ export default function NavAdminResponsive() {
                                             exit={{ opacity:1 }}
                                             transition={{ duration: 0.6, type:'spring' }}
                                             className="top-[135%] flex flex-col items-center justify-center w-[100vw] bg-slate-900 relative z-10 pb-2">
-                                            {getRole() <= 2 && 
+                                            {getRoleToken() <= 2 && 
                                                 <li className="px-[0.5rem] py-1 hover:bg-slate-900">
                                                     <Link href='/admin/product-option/add' className=" w-[100%]">
                                                         Add Product Option</Link>
@@ -273,7 +273,7 @@ export default function NavAdminResponsive() {
                                             exit={{ opacity:1 }}
                                             transition={{ duration: 0.6, type:'spring' }}
                                             className="top-[135%] flex flex-col items-center justify-center w-[100vw] bg-slate-900 relative z-10 pb-2">
-                                            {getRole() <= 2 && 
+                                            {getRoleToken() <= 2 && 
                                                 <li className="px-[0.5rem] py-1 hover:bg-slate-900">
                                                     <Link href='/admin/order/add' className=" w-[100%]">Add Order</Link>
                                                 </li>

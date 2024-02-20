@@ -1,7 +1,5 @@
-"use client"
+"use client";
 import { baseURL } from '@/api/baseURL';
-import tokenAuth from '@/api/tokenAuth';
-import tokenRole  from '@/api/tokenRole';
 import axios from 'axios';
 import Link from 'next/link'
 import { useRouter } from 'next/navigation';
@@ -10,22 +8,21 @@ import { CiCircleRemove } from "react-icons/ci";
 
 
 
-const Login = () => {
+const CheckoutRegister = () => {
     const router = useRouter();
-    const [auth, setAuth] = useState();
-    const [role, setRole] = useState();
-    const { setAuthToken } = tokenAuth();
-    const { setRoleToken } = tokenRole();
     const [data, setData] = useState({});
     const [isSubmit, setIsSubmit] = useState(false)
     const [errorMsg, setErrorMsg] = useState('')
     const [isError, setIsError] = useState(false)
-    const config = { 
-        headers: { "Content-Type": "application/json" } 
+
+    const config = { headers: { "Content-Type": "application/json" } }
+
+    const handleInput = (e) => {
+        setData({...data, [e.target.name]: e.target.value})
     }
 
-    /* POST DATA */
     async function postData() {
+        console.log(data)
         setIsSubmit(false)
 
         if(data.email === ''){
@@ -39,39 +36,40 @@ const Login = () => {
             setIsError(true)
             return;
         }
+        if(data.password_confirmation === ''){
+            setErrorMsg('Password Confirmation is required.')
+            setIsError(true)
+            return;
+        }
 
+        if(data.password !== data.password_confirmation){
+            setErrorMsg('Password do not match.')
+            setIsError(true)
+            return;
+        }
 
         try{
-        const result = await axios.post(`${baseURL}login/`, data, config)
-            .then((response) => {
-                if(!response.data?.auth_token){
-                    setErrorMsg(response.data.message)
-                    setIsError(true) 
-                    return;
-                }
-                console.log(response.data?.auth_token)
-                setAuthToken(response.data?.auth_token);
-                setRoleToken(response.data?.role_level);
-                router.push('/')  
-            });
+        const result = await axios.post(`${baseURL}register/`, data, config)
+        .then((response) => {
+            router.push('/checkout-login');      
+        
+        })
         } catch (error) {
         console.error(`Error: ${error}`)
-        }
-        
+        }    
     }  
 
     useEffect(() => { 
-        isSubmit == true && postData();  
+        isSubmit == true && postData();     
     }, [isSubmit]);
-
 
 
   return (
     <section className='w-[100%] h-auto flex flex-col items-center justify-center'>
         <div className='mx-auto w-[80%] lg:w-[40%] md:w-[65%] pb-[3rem]'>
-            <div className='text-4xl font-light pb-4'>Login Here.</div>
+            <div className='text-4xl font-light pb-4'>Register Here.</div>
             {isError == true &&
-                <div className='text-red-600 pb-4 flex justify-between'>
+                <div className='text-red-500 pb-4 flex justify-between'>
                     {errorMsg} 
                     <CiCircleRemove onClick={() => setIsError(false)} className='text-lg cursor-pointer' /> 
                 </div>
@@ -79,27 +77,37 @@ const Login = () => {
             <div className='pb-4 w-[100%]'>
                 <h6 className='block font-bold pb-1'>Email</h6>
                 <input 
-                    type='text'
+                    type='text' 
                     name='email'
-                    onChange={(e) => setData({...data, email: e.target.value})}
+                    onChange={handleInput}
                     className='w-[100%] outline-none rounded-lg border border-slate-300 px-3 py-4' />
             </div>
             <div className='pb-4 w-[100%]'>
                 <h6 className='block font-bold pb-1'>Password</h6>
                 <input 
-                    type='password' 
+                    type='password'
                     name='password'
-                    onChange={(e) => setData({...data, password: e.target.value})}
+                    onChange={handleInput} 
+                    className='w-[100%] outline-none rounded-lg border border-slate-300 px-3 py-4' />
+            </div>
+            <div className='pb-4 w-[100%]'>
+                <h6 className='block font-bold pb-1'>Confirm Password</h6>
+                <input 
+                    type='password'
+                    name='password_confirmation' 
+                    onChange={handleInput} 
                     className='w-[100%] outline-none rounded-lg border border-slate-300 px-3 py-4' />
             </div>
             <div className='pb-4 w-[100%]'>
                 <h6 className='pb-1 flex items-center gap-2'>
-                    Not registered?
-                    <Link href='/register' className='text-blue-600 hover:text-blue-700 hover:underline'>Register here.</Link>
+                    Already registered?
+                    <Link href='/checkout-login' className='text-blue-600 hover:text-blue-700 hover:underline'>
+                        Login here.
+                    </Link>
                 </h6>
             </div>
             <div className='pb-4 w-[100%] flex items-center justify-center'>
-                <button
+                <button 
                     onClick={() => setIsSubmit(true)}
                     className='w-[100%] rounded-lg text-white duration-150 ease-out flex items-center justify-center gap-2 py-4 bg-gradient-to-br from-pink-500 to-red-500 hover:from-pink-500 hover:to-pink-600 text-center'>
                     Submit
@@ -110,4 +118,4 @@ const Login = () => {
   )
 }
 
-export default Login
+export default CheckoutRegister

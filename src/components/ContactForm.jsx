@@ -6,8 +6,10 @@ import { useEffect, useState } from "react";
 import { baseURL } from "@/api/baseURL";
 import axios from "axios";
 
-const ContactForm = ({ bgColor }) => {
 
+
+
+const ContactForm = ({ bgColor }) => {
     const [data, setData] = useState({});
     const [input, setInput] = useState({});
     const [isSubmit, setIsSubmit] = useState(false);

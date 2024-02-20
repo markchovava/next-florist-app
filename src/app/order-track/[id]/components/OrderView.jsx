@@ -2,20 +2,21 @@
 
 import React, { useEffect, useState } from 'react'
 import axiosClientAPI from "@/api/axiosClientAPI";
-import { getToken } from "@/api/token";
 import { useRouter } from "next/navigation";
+import tokenAuth from '@/api/tokenAuth';
 
 
 
 export default function OrderView({ id }) {
     const router = useRouter();
     const [order, setOrder] = useState({});
+    const { getAuthToken } = tokenAuth();
     const [orderItems, setOrderItems] = useState([]);
 
     const config = {
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${getToken()}`
+            'Authorization': `Bearer ${getAuthToken()}`
       }}
 
 

@@ -26,7 +26,7 @@ export default function NavigationResponsive(){
     const [isAccount, setIsAccount] = useState(false);
     const [isLogout, setIsLogout] = useState(false);
     const { getAuthToken, removeAuthToken } = tokenAuth();
-    const { removeRole } = tokenRole()
+    const { removeRoleToken } = tokenRole()
     const authToken = getAuthToken();
     const { getShoppingSession } = tokenShoppingSession();
     const [isOpen, setIsOpen] = useState(false);
@@ -45,7 +45,7 @@ export default function NavigationResponsive(){
         const result = await axiosClientAPI.get(`logout/`, config)
             .then((response) => {
                 removeAuthToken();
-                removeRole();
+                removeRoleToken();
                 router.push(`/login`);
             })
         } catch (error) {

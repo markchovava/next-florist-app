@@ -1,3 +1,4 @@
+import { CookiesProvider } from 'react-cookie'
 import './globals.css'
 
 
@@ -10,7 +11,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className='w-[100%] h-auto'>
-        {children}
+          {children}
       </body>
     </html>
   )

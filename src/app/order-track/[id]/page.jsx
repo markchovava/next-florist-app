@@ -23,7 +23,7 @@ export default function page({ params: {id} }) {
                 <GoChevronRight />
                 </li>
                 <li className='flex items-center justify-start gap-1'>
-                <Link href='/order-track'>Orders List</Link>
+                <Link href='/order-track'>Track Order List</Link>
                 <GoChevronRight />
                 </li>
                 <li className='flex items-center justify-start gap-1'>

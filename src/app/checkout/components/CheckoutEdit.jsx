@@ -3,6 +3,7 @@ import axiosClientAPI from '@/api/axiosClientAPI';
 import { baseURL } from '@/api/baseURL';
 import { shoppingSession } from '@/api/shoppingSession';
 import { getToken } from '@/api/token';
+import tokenAuth from '@/api/tokenAuth';
 import Loader from '@/components/Loader';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
@@ -19,6 +20,7 @@ export default function CheckoutEdit() {
     const [isSubmit, setIsSubmit] = useState(false);
     const [delivery, setDelivery] = useState([]);
     const [isLoading, setIsLoading] = useState(true)
+    const { getAuthToken } = tokenAuth()
     const { getShoppingSession, removeShoppingSession } = shoppingSession();
     const shopping_session = getShoppingSession() ? getShoppingSession() : null;
     const [errorMsg, setErrorMsg] = useState({})
@@ -26,7 +28,7 @@ export default function CheckoutEdit() {
     const config = {
         headers: {
           'Content-Type': 'multipart/form-data',
-          'Authorization': `Bearer ${getToken()}`
+          'Authorization': `Bearer ${getAuthToken()}`
       }}
 
     /* GET DATA */
@@ -35,6 +37,7 @@ export default function CheckoutEdit() {
           const result = await axios.get(`${baseURL}cart/checkout?shopping_session=${shopping_session}`)
           .then((response) => {
             setData(response.data);
+            console.log(response.data);
           })
         } catch (error) {
             console.error(`Error: ${error}`);
@@ -48,7 +51,6 @@ export default function CheckoutEdit() {
           const result = await axios.get(`${baseURL}delivery/all`)
           .then((response) => {
             setDelivery(response.data.data);
-            console.log(response.data.data)
           })
         } catch (error) {
             console.error(`Error: ${error}`);
@@ -71,8 +73,42 @@ export default function CheckoutEdit() {
         }   
     } 
 
+    /* CHECK EMAIL IN THE DATABASE */
+    async function checkEmail() {
+        try{
+          const result = await axios.post(`${baseURL}check-email`, user?.email, config)
+          .then((response) => {
+            setErrorMsg({...errorMsg, email: response.data?.message});
+          })
+        } catch (error) {
+            console.error(`Error: ${error}`);
+            console.error(`Error Message: ${error.message}`);
+            console.error(`Error Response: ${error.response}`);
+        } 
+    }
+
     async function postData() {
         setIsSubmit(false);
+        if(!user?.first_name){
+            setErrorMsg({...errorMsg, first_name: 'Please enter your First name.'});
+            return;
+        }
+        if(!user?.last_name){
+            setErrorMsg({...errorMsg, last_name: 'Please enter your Last name.'});
+            return;
+        }
+        if(!user?.address){
+            setErrorMsg({...errorMsg, address: 'Please enter your Address.'});
+            return;
+        }
+        if(!user?.phone){
+            setErrorMsg({...errorMsg, phone: 'Please enter your Phone Number.'});
+            return;
+        }
+        if(!user?.email){
+            setErrorMsg({...errorMsg, email: 'Please enter your email.'});
+            return;
+        }  
         if(!data.delivery?.name){
             setErrorMsg({...errorMsg, delivery: 'Please select your delivery Method.'});
             return;
@@ -81,7 +117,6 @@ export default function CheckoutEdit() {
             setErrorMsg({...errorMsg, payment_method: 'Please select your Payment Method.'});
             return;
         }
-
         if(!data.cart?.is_agree){
             setErrorMsg({...errorMsg, is_agree: 'You are required to tick the box below to proceed.'});
             return;
@@ -106,7 +141,7 @@ export default function CheckoutEdit() {
             items: data.cart_items,
         }
         console.log('formData');
-        console.log(formData);
+        console.log(formData); 
         try{
           const result = await axiosClientAPI.post(`order/all`, formData, config)
           .then((response) => {
@@ -118,7 +153,7 @@ export default function CheckoutEdit() {
             console.error(`Error: ${error}`);
             console.error(`Error Message: ${error.message}`);
             console.error(`Error Response: ${error.response}`);
-        }     
+        }  
 
     } 
 
@@ -149,6 +184,26 @@ export default function CheckoutEdit() {
                     <section className='lg:w-[60%] w-[100%]'>
                         {/*  */}
                         <div className='font-light text-[2rem] pb-4'>Billing Details</div>
+                        {errorMsg.first_name &&
+                            <div className='w-[100%] flex items-center justify-center gap-3 pt-3 text-red-600'>
+                                <span>{errorMsg.first_name}</span>
+                                <span 
+                                    className='cursor-pointer' 
+                                    onClick={() => setErrorMsg({...errorMsg, first_name: undefined})}>
+                                        <CiCircleRemove />
+                                </span>
+                            </div>
+                        }
+                        {errorMsg.last_name &&
+                            <div className='w-[100%] flex items-center justify-center gap-3 pt-3 text-red-600'>
+                                <span>{errorMsg.last_name}</span>
+                                <span 
+                                    className='cursor-pointer' 
+                                    onClick={() => setErrorMsg({...errorMsg, last_name: undefined})}>
+                                        <CiCircleRemove />
+                                </span>
+                            </div>
+                        }
                         {/*  */}
                         <div className='flex items-start justify-start gap-3 pb-6'>
                             <div className='w-[50%]'>
@@ -168,7 +223,16 @@ export default function CheckoutEdit() {
                                     className='w-[100%] outline-none border border-slate-300 px-3 py-3 rounded-lg'/>
                             </div>
                         </div>
-                        
+                        {errorMsg.address &&
+                            <div className='w-[100%] flex items-center justify-center gap-3 pt-3 text-red-600'>
+                                <span>{errorMsg.address}</span>
+                                <span 
+                                    className='cursor-pointer' 
+                                    onClick={() => setErrorMsg({...errorMsg, address: undefined})}>
+                                        <CiCircleRemove />
+                                </span>
+                            </div>
+                        }
                         {/*  */}
                         <div className='pb-6'>
                             <div className='w-[100%]'>
@@ -192,6 +256,16 @@ export default function CheckoutEdit() {
                                     className='w-[100%] outline-none border border-slate-300 px-3 py-3 rounded-lg' />
                             </div>
                         </div>
+                        {errorMsg.phone &&
+                            <div className='w-[100%] flex items-center justify-center gap-3 pt-3 text-red-600'>
+                                <span>{errorMsg.phone}</span>
+                                <span 
+                                    className='cursor-pointer' 
+                                    onClick={() => setErrorMsg({...errorMsg, phone: undefined})}>
+                                        <CiCircleRemove />
+                                </span>
+                            </div>
+                        }
                         {/*  */}
                         <div className='pb-6'>
                             <div className='w-[100%]'>
@@ -203,6 +277,16 @@ export default function CheckoutEdit() {
                                     className='w-[100%] outline-none border border-slate-300 px-3 py-3 rounded-lg' />
                             </div>
                         </div>
+                        {errorMsg.email &&
+                            <div className='w-[100%] flex items-center justify-center gap-3 pt-3 text-red-600'>
+                                <span>{errorMsg.email}</span>
+                                <span 
+                                    className='cursor-pointer' 
+                                    onClick={() => setErrorMsg({...errorMsg, email: undefined})}>
+                                        <CiCircleRemove />
+                                </span>
+                            </div>
+                        }
                         {/*  */}
                         <div className='pb-6'>
                             <div className='w-[100%]'>

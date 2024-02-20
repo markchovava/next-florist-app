@@ -5,17 +5,18 @@ import { FaEye } from "react-icons/fa";
 import { BsArrowLeft, BsArrowRight } from "react-icons/bs"
 import React, { useEffect, useState } from 'react'
 import axiosClientAPI from '@/api/axiosClientAPI'
-import { getToken } from '@/api/token';
+import tokenAuth from "@/api/tokenAuth";
 
 
 const OrderTrack = () => {
     const [search, setSearch] = useState('');
     const [searchSubmit, setSearchSubmit] = useState(false);
     const [data, setData] = useState({})
+    const { getAuthToken } = tokenAuth();
     const config = {
       headers: {
           'Content-Type': 'application/json',
-        'Authorization': `Bearer ${getToken()}`
+        'Authorization': `Bearer ${getAuthToken()}`
     }}
     /* PAGINATION */
     const [nextURL, setNextURL] = useState()

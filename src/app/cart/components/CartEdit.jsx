@@ -1,6 +1,7 @@
 "use client"
 import { baseURL } from '@/api/baseURL';
 import { shoppingSession } from '@/api/shoppingSession';
+import tokenAuth from '@/api/tokenAuth';
 import { CartContextState } from '@/context/CartContext';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
@@ -19,6 +20,7 @@ export default function CartEdit() {
     const {cartState, cartDispatch} = CartContextState();
     const [options, setOptions] = useState([]);
     const { getShoppingSession } = shoppingSession();
+    const { getAuthToken } = tokenAuth();
     const shopping_session = getShoppingSession() ? getShoppingSession() : null;
 
      /* GET OPTIONS */
@@ -80,14 +82,11 @@ export default function CartEdit() {
         const result = cartState.items.reduce((acc, item) => acc + item.cart_item_option.total, 0);
         return result;
     };
-
     /* PRODUCTS QUANTITY */
     const calculateProductOptionsQuantity = () => {
         const result = cartState.items.reduce((acc, item) => acc + item.cart_item_option.quantity, 0);
         return result;
     };
-
-
     /* GRANDTOTAL */
     const calculateGrandTotal = () => {
         const option_total = calculateProductOptionsTotal() ? calculateProductOptionsTotal() : 0;
@@ -95,7 +94,6 @@ export default function CartEdit() {
         const result = option_total + product_total;
         return result;
     };
-
 
     async function postData() {
         setIsSubmit(false)
@@ -109,12 +107,15 @@ export default function CartEdit() {
             grandtotal: calculateGrandTotal(),
         }
         //console.log(formData)
-
         try{
             const result = await axios.post(`${baseURL}cart/all`, formData)
             .then((response) => {
                   console.log(response.data.data)
-                  router.push('/checkout')
+                  if( getAuthToken() ){
+                      router.push('/checkout');
+                  } else{
+                    router.push('/checkout-login')
+                  }
                 }
             );    
           } catch (error) {
