@@ -35,7 +35,7 @@ export default function OrderView({ id }) {
 
     async function getOrderItems() {
         try{
-          const result = await axiosClientAPI.get(`order-item/items/${id}`, config)
+          const result = await axiosClientAPI.get(`order-item/by-order-id/${id}`, config)
           .then((response) => {
             setOrderItems(response.data.data)
           })
@@ -45,7 +45,6 @@ export default function OrderView({ id }) {
             console.error(`Error Response: ${error.response}`);
         }   
     } 
-   
 
     
     useEffect(() => {
@@ -63,8 +62,8 @@ export default function OrderView({ id }) {
     <section className='mx-auto h-auto w-[100%]'>
         <div className='mx-auto w-[90%] h-auto pb-[4rem]'>
             {/* DETAILS */}
-            <section className="mx-auto w-[100%] pb-[2rem] flex justify-start items-start gap-4">
-                <div className="w-[50%]">
+            <section className="mx-auto w-[100%] pb-[2rem] flex flex-col lg:flex-row justify-start items-start gap-4">
+                <div className="lg:w-[50%] w-[100%]">
                     <h5 className='font-light text-[2rem] pb-4'>Billing Details</h5>
                     <ul>
                         <li className="flex justify-start items-center gap-1 pb-1">
@@ -91,15 +90,59 @@ export default function OrderView({ id }) {
                             Email: 
                             <span className="font-semibold">{order.order_user?.email}</span>
                         </li>
+                        <li className="flex justify-start items-center gap-1 pb-1">
+                            Message: 
+                            <span className="font-semibold">
+                                {order.message ? order.message : 'Not added.'}</span>
+                        </li>
                     </ul>
                 </div>
-                <div className="w-[50%]">
+                <div className="lg:w-[50%] w-[100%]">
                     <h5 className='font-light text-[2rem] pb-4'>Order Details</h5>
                     <ul>
                         <li className="flex justify-start items-center gap-1 pb-1">
                             Order No.: 
                             <span className="font-semibold">
                                 {order.order_no}</span>
+                        </li>
+                        <li className="flex justify-start items-center gap-1 pb-1">
+                            Order Total: 
+                            <span className="font-semibold">
+                                {order?.order_total && '$' + (order?.order_total / 100).toFixed(2)}</span>
+                        </li>
+                        <li className="flex justify-start items-center gap-1 pb-1">
+                            Order Quantity: 
+                            <span className="font-semibold">{order?.order_quantity}</span>
+                        </li>
+                        <li className="flex justify-start items-center gap-1 pb-1">
+                            Product Total: 
+                            <span className="font-semibold">
+                                {order?.product_total && '$' + (order?.product_total / 100).toFixed(2)}</span>
+                        </li>
+                        <li className="flex justify-start items-center gap-1 pb-1">
+                            Product Quantity: 
+                            <span className="font-semibold">
+                                {order?.product_quantity && order?.product_quantity}</span>
+                        </li>
+                        <li className="flex justify-start items-center gap-1 pb-1">
+                            Extra Flowers Quantity:
+                            <span className="font-semibold">
+                                {order?.extra_quantity}</span> 
+                        </li>
+                        <li className="flex justify-start items-center gap-1 pb-1">
+                            Extra Flowers Total: 
+                            <span className="font-semibold">
+                                {order.extra_total && '$' + (order.extra_total / 100).toFixed(2)}</span>
+                        </li>
+                        <li className="flex justify-start items-center gap-1 pb-1">
+                            Delivery: 
+                            <span className="font-semibold">
+                                {order.delivery_name ? order.delivery_name : 'Not added.'}</span>
+                        </li>
+                        <li className="flex justify-start items-center gap-1 pb-1">
+                            Delivery Price: 
+                            <span className="font-semibold">
+                                ${order.delivery_price ? (order.delivery_price / 100).toFixed(2) : (0).toFixed(2)}</span>
                         </li>
                         <li className="flex justify-start items-center gap-1 pb-1">
                             Delivery Status: 
@@ -110,30 +153,6 @@ export default function OrderView({ id }) {
                                             font-semibold px-2 py-1 rounded-xl text-white`}>
                                 {order.delivery_status}</span>
                         </li>
-                        <li className="flex justify-start items-center gap-1 pb-1">
-                            Grandtotal: 
-                            <span className="font-semibold">
-                                ${order?.grandtotal && (order?.grandtotal / 100).toFixed(2)}</span>
-                        </li>
-                        <li className="flex justify-start items-center gap-1 pb-1">
-                            Product Quantity: 
-                            <span className="font-semibold">{order?.product_quantity}</span>
-                        </li>
-                        <li className="flex justify-start items-center gap-1 pb-1">
-                            Product Total: 
-                            <span className="font-semibold">
-                                ${order?.product_total && (order?.product_total / 100).toFixed(2)}</span>
-                        </li>
-                        <li className="flex justify-start items-center gap-1 pb-1">
-                            Product Option Quantity:
-                            <span className="font-semibold">
-                                {order?.product_option_quantity}</span> 
-                        </li>
-                        <li className="flex justify-start items-center gap-1 pb-1">
-                            Product Option Total: 
-                            <span className="font-semibold">
-                                ${order.product_option_total && (order?.product_option_total / 100).toFixed(2)}</span>
-                        </li>
                     </ul>
                 </div>
             
@@ -141,58 +160,61 @@ export default function OrderView({ id }) {
         
 
         
-            {/* HEADER */}
-            <div className="font-bold w-[100%] flex items-center justify-start bg-slate-100 py-3">
-                <div className="w-[35%] p-3 ">NAME</div>
-                <div className="w-[35%] p-3 border-l border-slate-500">OPTION</div>
-                <div className="w-[30%] p-3 border-l border-slate-500">TOTAL</div>
-            </div>
-
-            {orderItems && orderItems.map((item, i) => (
-                <div key={i} className="w-[100%] flex items-center justify-start py-3 border-b border-slate-300">
-                    {/*  */}
-                    <div className="w-[35%] p-3 ">
-                        <div className='w-[100%] flex items-center justify-between'>
-                            <span>{item.name}</span>
-                            <span className='font-bold'> ${ (item.price /100).toFixed(2) }</span>
-                        </div>
-                        <div className='flex justify-start gap-2'>
-                            <span>Quantity:</span>
-                            <span className='font-bold'>{item.quantity}</span>
-                        </div>
-                    </div>
-                    {/*  */}
-                    <div className="w-[35%] p-3 border-x border-slate-500">
-                        <div className='w-[100%] flex items-center justify-between'>
-                            <span>{item.order_item_option?.name}</span>
-                            <span className='font-bold'> ${ (item.order_item_option?.price / 100).toFixed(2) }</span>
-                        </div>
-                        <div className='flex justify-start gap-2'>
-                            <span>Quantity:</span>
-                            <span className='font-bold'>{item.order_item_option?.quantity}</span>
-                        </div>
-                    </div>
-                    {/*  */}
-                    <div className="w-[30%] p-3 border-b border-slate-500">
-                        <div className='w-[100%] flex items-center justify-between'>
-                            <span>Product Total</span>
-                            <span className='font-bold'> 
-                                ${ (item.total / 100).toFixed(2) }</span>
-                        </div>
-                        <div className='w-[100%] flex items-center justify-between'>
-                            <span>Product Option Total</span>
-                            <span className='font-bold'> 
-                                ${ (item.order_item_option?.total / 100).toFixed(2) }</span>
-                        </div>
-                        <div className='w-[100%] flex items-center justify-between'>
-                            <span>Package Total</span>
-                            <span className='font-bold'> 
-                                ${ (item.grandtotal / 100).toFixed(2) }</span>
-                        </div>
-                        
-                    </div>
+            <section className="w-[100%] lg:overflow-hidden overflow-scroll">
+                {/* HEADER */}
+                <div className="font-bold lg:w-[100%] w-[50rem] flex items-center justify-start bg-slate-100 py-3">
+                    <div className="w-[35%] p-3 ">NAME</div>
+                    <div className="w-[35%] p-3 border-l border-slate-500">Extras</div>
+                    <div className="w-[30%] p-3 border-l border-slate-500">TOTAL</div>
                 </div>
-            ))}
+                {/*  */}
+                {orderItems && orderItems.map((item, i) => (
+                    <div key={i} className="lg:w-[100%] w-[50rem] flex items-center justify-start py-3 border-b border-slate-300">
+                        {/*  */}
+                        <div className="w-[35%] p-3 ">
+                            <div className='w-[100%] flex items-center justify-between'>
+                                <span>{item.product_name}</span>
+                                <span className='font-bold'> 
+                                {item.product_price && '$' + (item.product_price /100).toFixed(2) }
+                                </span>
+                            </div>
+                            <div className='flex justify-start gap-2'>
+                                <span>Quantity:</span>
+                                <span className='font-bold'>{item.product_quantity}</span>
+                            </div>
+                        </div>
+                        {/*  */}
+                        <div className="w-[35%] p-3 border-x border-slate-500">
+                            <div className='w-[100%] flex items-center justify-between'>
+                                <span>{item.extra_name}</span>
+                            </div>
+                            <div className='flex justify-start gap-2'>
+                                <span>Quantity:</span>
+                                <span className='font-bold'>{item.extra_quantity}</span>
+                            </div>
+                        </div>
+                        {/*  */}
+                        <div className="w-[30%] p-3">
+                            <div className='w-[100%] flex items-center justify-between'>
+                                <span>Product Total</span>
+                                <span className='font-bold'> 
+                                    {item.product_total &&'$' + (item.product_total / 100).toFixed(2) }</span>
+                            </div>
+                            <div className='w-[100%] flex items-center justify-between'>
+                                <span>Extra Flowers Total</span>
+                                <span className='font-bold'> 
+                                    {item.extra_total && '$' + (item.extra_total / 100).toFixed(2) }</span>
+                            </div>
+                            <div className='w-[100%] font-bold flex items-center justify-between border-t border-slate-500'>
+                                <span>Total</span>
+                                <span className=''> 
+                                    {item.orderitem_total && '$' + (item.orderitem_total / 100).toFixed(2) }</span>
+                            </div>
+                            
+                        </div>
+                    </div>
+                ))}
+            </section>
     
     
             

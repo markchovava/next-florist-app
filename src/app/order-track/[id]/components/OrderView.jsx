@@ -35,7 +35,7 @@ export default function OrderView({ id }) {
 
     async function getOrderItems() {
         try{
-          const result = await axiosClientAPI.get(`order-item/items/${id}`, config)
+          const result = await axiosClientAPI.get(`order-item/by-order-id/${id}`, config)
           .then((response) => {
             setOrderItems(response.data.data)
           })
@@ -107,28 +107,33 @@ export default function OrderView({ id }) {
                                 {order.order_no}</span>
                         </li>
                         <li className="flex justify-start items-center gap-1 pb-1">
-                            Grandtotal: 
+                            Order Total: 
                             <span className="font-semibold">
-                                ${order?.grandtotal && (order?.grandtotal / 100).toFixed(2)}</span>
+                                {order?.order_total && '$' + (order?.order_total / 100).toFixed(2)}</span>
                         </li>
                         <li className="flex justify-start items-center gap-1 pb-1">
-                            Product Quantity: 
-                            <span className="font-semibold">{order?.product_quantity}</span>
+                            Order Quantity: 
+                            <span className="font-semibold">{order?.order_quantity}</span>
                         </li>
                         <li className="flex justify-start items-center gap-1 pb-1">
                             Product Total: 
                             <span className="font-semibold">
-                                ${order?.product_total && (order?.product_total / 100).toFixed(2)}</span>
+                                {order?.product_total && '$' + (order?.product_total / 100).toFixed(2)}</span>
                         </li>
                         <li className="flex justify-start items-center gap-1 pb-1">
-                            Product Option Quantity:
+                            Product Quantity: 
                             <span className="font-semibold">
-                                {order?.product_option_quantity}</span> 
+                                {order?.product_quantity && order?.product_quantity}</span>
                         </li>
                         <li className="flex justify-start items-center gap-1 pb-1">
-                            Product Option Total: 
+                            Extra Flowers Quantity:
                             <span className="font-semibold">
-                                ${order.product_option_total && (order?.product_option_total / 100).toFixed(2)}</span>
+                                {order?.extra_quantity}</span> 
+                        </li>
+                        <li className="flex justify-start items-center gap-1 pb-1">
+                            Extra Flowers Total: 
+                            <span className="font-semibold">
+                                {order.extra_total && '$' + (order.extra_total / 100).toFixed(2)}</span>
                         </li>
                         <li className="flex justify-start items-center gap-1 pb-1">
                             Delivery: 
@@ -159,7 +164,7 @@ export default function OrderView({ id }) {
                 {/* HEADER */}
                 <div className="font-bold lg:w-[100%] w-[50rem] flex items-center justify-start bg-slate-100 py-3">
                     <div className="w-[35%] p-3 ">NAME</div>
-                    <div className="w-[35%] p-3 border-l border-slate-500">OPTION</div>
+                    <div className="w-[35%] p-3 border-l border-slate-500">Extras</div>
                     <div className="w-[30%] p-3 border-l border-slate-500">TOTAL</div>
                 </div>
                 {/*  */}
@@ -168,41 +173,42 @@ export default function OrderView({ id }) {
                         {/*  */}
                         <div className="w-[35%] p-3 ">
                             <div className='w-[100%] flex items-center justify-between'>
-                                <span>{item.name}</span>
-                                <span className='font-bold'> ${ (item.price /100).toFixed(2) }</span>
+                                <span>{item.product_name}</span>
+                                <span className='font-bold'> 
+                                {item.product_price && '$' + (item.product_price /100).toFixed(2) }
+                                </span>
                             </div>
                             <div className='flex justify-start gap-2'>
                                 <span>Quantity:</span>
-                                <span className='font-bold'>{item.quantity}</span>
+                                <span className='font-bold'>{item.product_quantity}</span>
                             </div>
                         </div>
                         {/*  */}
                         <div className="w-[35%] p-3 border-x border-slate-500">
                             <div className='w-[100%] flex items-center justify-between'>
-                                <span>{item.order_item_option?.name}</span>
-                                <span className='font-bold'> ${ (item.order_item_option?.price / 100).toFixed(2) }</span>
+                                <span>{item.extra_name}</span>
                             </div>
                             <div className='flex justify-start gap-2'>
                                 <span>Quantity:</span>
-                                <span className='font-bold'>{item.order_item_option?.quantity}</span>
+                                <span className='font-bold'>{item.extra_quantity}</span>
                             </div>
                         </div>
                         {/*  */}
-                        <div className="w-[30%] p-3 border-b border-slate-500">
+                        <div className="w-[30%] p-3">
                             <div className='w-[100%] flex items-center justify-between'>
                                 <span>Product Total</span>
                                 <span className='font-bold'> 
-                                    ${ (item.total / 100).toFixed(2) }</span>
+                                    {item.product_total &&'$' + (item.product_total / 100).toFixed(2) }</span>
                             </div>
                             <div className='w-[100%] flex items-center justify-between'>
-                                <span>Product Option Total</span>
+                                <span>Extra Flowers Total</span>
                                 <span className='font-bold'> 
-                                    ${ (item.order_item_option?.total / 100).toFixed(2) }</span>
+                                    {item.extra_total && '$' + (item.extra_total / 100).toFixed(2) }</span>
                             </div>
-                            <div className='w-[100%] flex items-center justify-between'>
-                                <span>Package Total</span>
-                                <span className='font-bold'> 
-                                    ${ (item.grandtotal / 100).toFixed(2) }</span>
+                            <div className='w-[100%] font-bold flex items-center justify-between border-t border-slate-500'>
+                                <span>Total</span>
+                                <span className=''> 
+                                    {item.orderitem_total && '$' + (item.orderitem_total / 100).toFixed(2) }</span>
                             </div>
                             
                         </div>

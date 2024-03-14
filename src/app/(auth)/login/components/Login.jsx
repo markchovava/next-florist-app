@@ -5,18 +5,20 @@ import tokenRole  from '@/api/tokenRole';
 import axios from 'axios';
 import Link from 'next/link'
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { CiCircleRemove } from "react-icons/ci";
 
 
 
 const Login = () => {
     const router = useRouter();
-    const [auth, setAuth] = useState();
-    const [role, setRole] = useState();
     const { setAuthToken } = tokenAuth();
     const { setRoleToken } = tokenRole();
     const [data, setData] = useState({});
+    //const [auth, setAuth] = useState('')
+    //const [role, setRole] = useState('')
+    const authRef = useRef();
+    const roleRef = useRef();
     const [isSubmit, setIsSubmit] = useState(false)
     const [errorMsg, setErrorMsg] = useState('')
     const [isError, setIsError] = useState(false)
@@ -24,22 +26,20 @@ const Login = () => {
         headers: { "Content-Type": "application/json" } 
     }
 
+
     /* POST DATA */
     async function postData() {
         setIsSubmit(false)
-
         if(data.email === ''){
             setErrorMsg('Email is required.')
             setIsError(true)
             return;
         }
-
         if(data.password === ''){
             setErrorMsg('Password is required.')
             setIsError(true)
             return;
         }
-
 
         try{
         const result = await axios.post(`${baseURL}login/`, data, config)
@@ -49,9 +49,8 @@ const Login = () => {
                     setIsError(true) 
                     return;
                 }
-                console.log(response.data?.auth_token)
-                setAuthToken(response.data?.auth_token);
-                setRoleToken(response.data?.role_level);
+                setAuthToken(response.data?.auth_token)
+                setRoleToken(response.data?.role_level)
                 router.push('/')  
             });
         } catch (error) {
@@ -60,8 +59,9 @@ const Login = () => {
         
     }  
 
+    
     useEffect(() => { 
-        isSubmit == true && postData();  
+        isSubmit == true && postData();
     }, [isSubmit]);
 
 

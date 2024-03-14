@@ -26,12 +26,7 @@ const page = () => {
                 </li>
             </ul>
         </section>
-        {/* TITLE */}
-        <section className='w-[100%] h-auto flex items-center justify-center'>
-            <h1 className='text-[4rem] font-black pt-[3.5rem] pb-[2rem]'>
-                Checkout
-            </h1>
-        </section>
+        
         {/* CHECKOUT CONTENT */}
         <CheckoutEdit />
 

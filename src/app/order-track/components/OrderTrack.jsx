@@ -123,7 +123,7 @@ const OrderTrack = () => {
                 <div className="font-bold lg:w-[100%] w-[50rem] flex items-center justify-start bg-slate-100 py-3">
                     <div className="w-[30%] p-3 ">ORDER NO.</div>
                     <div className="w-[20%] p-3 border-l border-slate-500">DELIVERY</div>
-                    <div className="w-[30%] p-3 border-l border-slate-500">GRANDTOTAL</div>
+                    <div className="w-[30%] p-3 border-l border-slate-500">TOTAL</div>
                     <div className="w-[20%] p-3 border-l border-slate-500">ACTION</div>
                 </div>
               
@@ -142,7 +142,7 @@ const OrderTrack = () => {
                             </span>
                       </div>
                       <div className="w-[30%] p-3 border-l border-slate-300">
-                          ${item.grandtotal ? (item.grandtotal / 100).toFixed(2) : 'Not added.'}</div>
+                          {item.order_total ? '$' + (item.order_total / 100).toFixed(2) : 'Not added.'}</div>
                       <div className="w-[20%] p-3 border-l border-slate-300">
                           <Link href={`/order-track/${item.id}`}>   
                             <FaEye className="text-xl transition-all ease-out duration-150 hover:scale-110 hover:text-pink-600"/>

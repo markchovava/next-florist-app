@@ -5,7 +5,6 @@ import React from 'react'
 import { GoChevronRight } from 'react-icons/go'
 import { IoHomeOutline } from 'react-icons/io5'
 import CartEdit from './components/CartEdit'
-import CartTest from './components/CartTest'
 
 
 

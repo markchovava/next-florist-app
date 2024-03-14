@@ -19,7 +19,8 @@ const Header = () => {
       <div 
         style={{ backgroundImage: `url('/assets/img/rose_bg.jpg')`}} 
         className="w-[100%] lg:h-[160px] h-[100px]  bg-left bg-no-repeat bg-cover flex items-end justify-center ">
-        <div className="mb-4 font-semibold lg:text-[4rem] text-[2rem] leading-none text-pink-700">River Range Roses</div>
+        <div className="mb-4 font-semibold lg:text-[4rem] text-[2rem] leading-none text-pink-700">
+          River Range Florist and Gift Shop</div>
         
       </div>
       {/* NAVIGATION */}

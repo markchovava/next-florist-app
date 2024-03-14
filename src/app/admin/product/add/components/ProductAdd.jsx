@@ -1,14 +1,10 @@
 "use client"
 import { useRouter } from 'next/navigation'
-import Link from 'next/link'
 import { useEffect, useRef, useState } from 'react'
-import Footer from '@/components/Footer'
-import Header from '@/components/Header'
-import { GoChevronRight } from 'react-icons/go'
-import { IoHomeOutline } from 'react-icons/io5'
+
 import { CiCirclePlus, CiCircleRemove } from "react-icons/ci";
 import axiosClientAPI from '@/api/axiosClientAPI'
-import { getToken } from '@/api/token'
+import tokenAuth from '@/api/tokenAuth'
 
 export default function ProductAdd() {
     const router = useRouter();
@@ -16,17 +12,16 @@ export default function ProductAdd() {
     const imageFile = useRef(null);
     const [data, setData] = useState({})
     const [isFormSubmit, setIsFormSubmit] = useState(false)
+    const { getAuthToken } = tokenAuth();
     //Images
     const [thumbnail, setThumbnail] = useState();
     const [image, setImage] = useState();
     const config = {
         headers: {
             "Content-Type": "multipart/form-data",
-            'Authorization': `Bearer ${getToken()}`, 
+            'Authorization': `Bearer ${getAuthToken()}`, 
         }
     }
-
-    console.log(getToken())
 
     const handleInput = (e) => {
         setData({...data, [e.target.name]: e.target.value})
@@ -38,21 +33,20 @@ export default function ProductAdd() {
         const result = await axiosClientAPI.post(`product/`, data, config)
         .then((response) => {
               router.push('/admin/product');
+              setIsFormSubmit(false);
             }
         );    
       } catch (error) {
           console.error(`Error: ${error}`);
           console.error(`Error Message: ${error.message}`);
           console.error(`Error Response: ${error.response}`);
+          setIsFormSubmit(false);
       } 
  
   }
 
   useEffect(() => {
-    if(isFormSubmit == true){
-        postProduct()
-        setIsFormSubmit(false)
-    }
+    isFormSubmit == true && postProduct();
   }, [isFormSubmit])
 
   return (
@@ -144,7 +138,7 @@ export default function ProductAdd() {
                 {/* PRICE */}
                 <div className='pb-6'>
                     <div className='w-[100%]'>
-                        <h6 className='mb-1 text-sm'>Price:</h6>
+                        <h6 className='mb-1 text-sm'>Price (cents):</h6>
                         <input type='number'
                             name='price' 
                             onChange={handleInput}
@@ -160,7 +154,8 @@ export default function ProductAdd() {
                             setIsFormSubmit(true);
                         }}
                         className='w-[100%] py-5 rounded-lg flex justify-center items-center text-white bg-gradient-to-br from-pink-500 to-red-500 hover:from-pink-500 hover:to-pink-600 duration-150 transition-all'>
-                        Submit</button>
+                        {isFormSubmit === true ? 'Processing' : 'Submit'}
+                        </button>
                 </div>
             </div>
                 

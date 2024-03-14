@@ -22,7 +22,11 @@ const Featured = async () => {
                 {categoryPriorityTwo.data &&
                     categoryPriorityTwo.data.map((item, i) => (
                     <div key={i} className='w-[100%] pt-4 pb-5 px-3 bg-white drop-shadow-md'>
-                        <div><h4 className='font-bold text-2xl pb-2'>{item.name}</h4></div>
+                        <div>
+                            <h4 className='font-bold text-xl pb-2'>
+                            {item.name && (item.name.length > 20 ? item.name.slice(0, 20) + '...' : item.name)}
+                            </h4>
+                        </div>
                         <div className='w-[100%] overflow-hidden aspect-[4/5] rounded bg-white flex items-center justify-center'>
                             <img className='object-cover w-[100%] h-[100%]' src={baseURL + item.thumbnail} />
                         </div>

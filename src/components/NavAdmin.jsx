@@ -203,7 +203,7 @@ export default function NavAdmin() {
                     </li>
 
                     {/* PRODUCT OPTION */}
-                    <li className="relative" 
+                    {/* <li className="relative" 
                         onClick={() => {
                             setIsSetting(false);
                             setIsUser(false);
@@ -236,7 +236,7 @@ export default function NavAdmin() {
                                 </motion.ul>
                             </AnimatePresence> 
                         }    
-                    </li>
+                    </li> */}
                     {/* ORDER */}
                     <li className="relative"
                         onClick={() => {

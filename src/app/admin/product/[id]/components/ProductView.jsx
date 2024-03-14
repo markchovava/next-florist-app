@@ -4,6 +4,7 @@ import { baseURL } from '@/api/baseURL'
 import tokenAuth from '@/api/tokenAuth'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
+import parse from 'html-react-parser';
 
 
 export default function ProductView({ id }) {
@@ -91,7 +92,9 @@ export default function ProductView({ id }) {
                 {/*  */}
                 <div className='flex items-center justify-start gap-3 pb-6'>
                     <div className='w-[20%]'>Description: </div>
-                    <div className='w-[80%] font-semibold'>{data.description}</div>
+                    <div className='w-[80%] font-semibold'>
+                        {data.description}
+                    </div>
                 </div>
                 {/*  */}
                 {data.categories?.length > 0 &&
@@ -105,7 +108,9 @@ export default function ProductView({ id }) {
                 {/*  */}
                 <div className='flex items-center justify-start gap-3 pb-6'>
                     <div className='w-[20%]'>Price: </div>
-                    <div className='w-[80%] font-semibold'>${(data.price / 100).toFixed(2)}</div>
+                    <div className='w-[80%] font-semibold'>
+                        {data.price ? '$' + (data.price / 100).toFixed(2) : '$' + (0).toFixed(2)}
+                    </div>
                 </div>
                 {/*  */}
                 <div className='flex items-center justify-start gap-3 pb-6'>

@@ -48,17 +48,19 @@ export default function ProductEdit({ id }) {
 
     /* POST PRODUCT */
     async function updateData() {
-        setIsSubmit(false)
+        
         try{
         const result = await axiosClientAPI.post(`product/${id}`, data, config)
         .then((response) => {
-                router.push(`/admin/product/${id}`)
+                router.push(`/admin/product/${id}`);
+                setIsSubmit(false)
             }
         );    
         } catch (error) {
-            console.error(`Error: ${error}`)
-            console.error(`Error Message: ${error.message}`)
-            console.error(`Error Response: ${error.response}`)
+            console.error(`Error: ${error}`);
+            console.error(`Error Message: ${error.message}`);
+            console.error(`Error Response: ${error.response}`);
+            setIsSubmit(false);
         }
 
     }
@@ -160,7 +162,7 @@ export default function ProductEdit({ id }) {
             {/* PRICE */}
             <div className='pb-6'>
                 <div className='w-[100%]'>
-                    <h6 className='mb-1 text-sm'>Price:</h6>
+                    <h6 className='mb-1 text-sm'>Price (cents):</h6>
                     <input type='number'
                         name='price'
                         value={data.price} 
@@ -176,7 +178,8 @@ export default function ProductEdit({ id }) {
                         setIsSubmit(true);
                     }}
                     className='w-[100%] py-5 rounded-lg flex justify-center items-center text-white bg-gradient-to-br from-pink-500 to-red-500 hover:from-pink-500 hover:to-pink-600 duration-150 transition-all'>
-                    Submit</button>
+                    {isSubmit === true ? 'Processing' : 'Submit'}
+                    </button>
             </div>
         </div>
            

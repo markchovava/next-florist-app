@@ -84,19 +84,20 @@ export default function ProductCategoryEdit({ id }) {
     }
 
     /* SUBMIT DATA */
-    async function postData() {
-        setIsSubmit(false);
+    async function postData() { 
         const product_categories = {product_categories: data};
         console.log(product_categories)
         try{
         const result = await axiosClientAPI.post(`product-category/`, product_categories, config)
             .then((response) => {
             router.push(`/admin/product/${id}`);
+            setIsSubmit(false);
             })
         } catch (error) {
             console.error(`Error: ${error}`);
             console.error(`Error Message: ${error.message}`);
             console.error(`Error Response: ${error.response}`);
+            setIsSubmit(false);
         }  
     }  
 
@@ -109,6 +110,9 @@ export default function ProductCategoryEdit({ id }) {
     useEffect(() => { 
         isSubmit == true && postData();
     }, [isSubmit]);
+
+
+    
 
 
 
@@ -179,8 +183,14 @@ export default function ProductCategoryEdit({ id }) {
                 <button 
                   onClick={() => setIsSubmit(true)} 
                   className='lg:w-[20%] group transition ease-in-out duration-200  flex items-center justify-center gap-1 rounded-xl py-[1rem] px-[2rem] text-white bg-gradient-to-br from-pink-500 to-red-500 hover:from-pink-500 hover:to-pink-600'>
-                  Submit 
-                  <BsArrowRight className='transition ease-in-out duration-200 group-hover:translate-x-1' /></button>
+                  {isSubmit == true ?
+                    'Processing' :
+                    <>
+                        Submit 
+                        <BsArrowRight className='transition ease-in-out duration-200 group-hover:translate-x-1' />
+                    </> 
+                  }
+                </button>
             </div>
         </div>
       </section>

@@ -116,6 +116,19 @@ export default function ProductList() {
         searchSubmit == true && searchData();
     }, [searchSubmit]); 
 
+
+
+    if(data.length <= 0){
+        return (
+        <>
+          <div className="w-[100%] h-[50vh] flex items-center justify-center py-4 border border-slate-200 ">
+              <h6 className='animate-pulse text-2xl'>Loading...</h6>
+          </div>
+        </>
+        )
+    }
+
+
   return (
     <section className='mx-auto h-auto w-[100%]'>
         <div className='mx-auto w-[90%] h-auto pb-[4rem]'>

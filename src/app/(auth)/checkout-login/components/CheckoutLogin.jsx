@@ -51,9 +51,9 @@ const CheckoutLogin = () => {
                     setIsError(true) 
                     return;
                 }
-                console.log(response.data?.auth_token)
-                setAuthToken(response.data?.auth_token);
-                setRoleToken(response.data?.role_level);
+                console.log(response.data)
+                window.localStorage.setItem('RIVER_RANGE_FLORIST_AUTH_TOKEN', response.data?.auth_token);
+                window.localStorage.setItem('RIVER_RANGE_FLORIST_ROLE_TOKEN', response.data?.role_level);
                 router.push('/checkout')  
             });
         } catch (error) {

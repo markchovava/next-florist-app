@@ -9,29 +9,27 @@ import { ProductContextState } from '@/context/ProductContext';
 import Link from 'next/link';
 import { shoppingSession } from '@/api/shoppingSession';
 import { useRouter } from 'next/navigation';
-import { CiCircleRemove } from 'react-icons/ci';
 
 
 
 
 export default function ProductView({ id, fourProducts }){
-  const fourProductsData = JSON.parse(fourProducts.value);
     const router = useRouter();
     const {productDispatch, productState} = ProductContextState();
     const {setShoppingSession, getShoppingSession} = shoppingSession();
     const [product, setProduct] = useState({});
-    const [data, setData] = useState({});
     const [options, setOptions] = useState([]);
-    const [extra, setExtra] = useState({});
     const [isSubmit, setIsSubmit] = useState(false);
-    const [errMsg, setErrMsg] = useState('');
+    const fourProductsData = JSON.parse(fourProducts.value);
+    const extras = () => {
+      let result = [];
+      for(let i = 1; i <= 10; i++){
+        result.push(i * 5);
+      }
+      return result;
+    } 
+    
 
-  const handleInput = (e) => {
-    setData({...data, [e.target.name]: e.target.value})
-    
-  }
-    
-    
     async function getProducts() {
       try{
         const result = await axios.get(`${baseURL}product/${id}`)
@@ -58,26 +56,6 @@ export default function ProductView({ id, fourProducts }){
           console.error(`Error Response: ${error.response}`);
       }   
     }  
-    async function getExtra() {
-      try{
-        const result = await axios.get(`${baseURL}product-extra/flower`)
-        .then((response) => {
-          setExtra(response.data.data);
-          console.log(response.data.data);
-        })
-      } catch (error) {
-          console.error(`Error: ${error}`);
-          console.error(`Error Message: ${error.message}`);
-          console.error(`Error Response: ${error.response}`);
-      }   
-    }
-    const extras = () => {
-      let result = [];
-      for(let i = 1; i <= 10; i++){
-        result.push(i * extra.quantity);
-      }
-      return result;
-    } 
     async function getOptions() {
       try{
         const result = await axios.get(`${baseURL}product-option`)
@@ -93,36 +71,52 @@ export default function ProductView({ id, fourProducts }){
 
     /* POST DATA */
     async function postData() {
-      if(!data.product_quantity){
-        setErrMsg('You are required to Quantity on product.');
-        setIsSubmit(false)
-        return;
-      }
-      console.log(data.product_quantity)
-      const shopping_session = getShoppingSession() ? getShoppingSession() : null;
-      const product_total = Number(product.price) * Number(data.product_quantity);
-      const cartitem_extra_total = Number(extra.price) * Number(data.extra_quantity);
-      const formData = {
-        shopping_session: shopping_session,
-        product_quantity: Number(data.product_quantity),
-        product_total: product_total,
-        product_id: product.id,
-        product_name: product.name,
-        product_quantity: Number(data.product_quantity),
-        product_unit_price: Number(product.price),
-        extra_quantity: Number(data.extra_quantity),
-        extra_total: cartitem_extra_total,
-        extra_name: extra.name,
-        extra_quantity: Number(data.extra_quantity),
-        extra_total: cartitem_extra_total,
-      
-      }
-     
+      const shopping_session = getShoppingSession()
+      const item = productState.item ? {
+            id: productState.item.id,
+            name: productState.item.name,
+            image: productState.item.image,
+            price: productState.item.price,
+            quantity: productState.item.quantity,
+            total: (productState.item.quantity ? Number(productState.item.quantity) : 0) * 
+                  (productState.item.price ? Number(productState.item.price) : 0),
+            grandtotal: (productState.item.quantity ? Number(productState.item.quantity) : 0) * 
+                        (productState.item.price ? Number(productState.item.price) : 0) + 
+                        ((productState.item.product_option?.price ? Number(productState.item.product_option?.price) : 0) * 
+                        (productState.item.product_option?.quantity ? Number(productState.item.product_option?.quantity) : 0))
+      } : null;
+      const product_option = productState.item.product_option ? {
+            id: productState.item.product_option.id,
+            name: productState.item.product_option.name,
+            price: productState.item.product_option.price,
+            quantity: productState.item.product_option?.quantity,
+            total: (productState.item.product_option?.price ? Number(productState.item.product_option?.price) : 0) * 
+                  (productState.item.product_option?.quantity ? Number(productState.item.product_option?.quantity) : 0)
+      } : null;
+      const data = {
+            shopping_session: shopping_session && shopping_session,
+            product_total: (item.price ? item.price : 0) * 
+                    (item.quantity ? item.quantity : 0),
+            product_quantity: item.quantity ? item.quantity : 0,
+            product_option_quantity: product_option?.quantity ? product_option.quantity : 0,
+            product_option_total: product_option ? 
+                    ((product_option.price ? product_option.price : 0) * 
+                    (product_option.quantity ? product_option.quantity : 0)) : 0,
+            grandtotal: (
+                (item.price ? item.price : 0) * (item.quantity ? item.quantity : 0)) + 
+                (product_option !== undefined && 
+                ( (product_option?.price ? product_option.price : 0) * 
+                  (product_option?.quantity ? product_option.quantity : 0)  )
+            ),
+            item: item ? item : null,
+            product_option: product_option ? product_option : null,
+      };
+
       try{
-          const result = await axios.post(`${baseURL}cart/`, formData)
+          const result = await axios.post(`${baseURL}cart/`, data)
           .then((response) => {
-                console.log(response.data)
-                setShoppingSession(response.data.shopping_session)
+                //console.log(response.data.data)
+                setShoppingSession(response.data.data.shopping_session)
                 router.push('/cart')
                 setIsSubmit(false)
               }
@@ -132,12 +126,11 @@ export default function ProductView({ id, fourProducts }){
             console.error(`Error Message: ${error.message}`);
             console.error(`Error Response: ${error.response}`);
             setIsSubmit(false)
-        } 
+        }  
     }
 
     
     useLayoutEffect(() => {
-      getExtra();
       getProducts()
       getOptions()
     }, []);
@@ -147,7 +140,7 @@ export default function ProductView({ id, fourProducts }){
     }, [isSubmit]);
 
 
-    /* if(!product && options.length <= 0){
+    if(!product && options.length <= 0){
       return (
       <>
         <div className="w-[50rem] lg:w-[100%] h-[50vh] flex items-center justify-center py-4 border border-slate-200 ">
@@ -156,24 +149,13 @@ export default function ProductView({ id, fourProducts }){
       </>
       )
   }
-   */
+  
 
 
   return (
     <>
       <section className='w-[100%] h-auto bg-white'>
-      {errMsg !== '' &&
-        <section className='mx-auto w-[90%] pt-[2rem] text-red-500 text-lg flex items-center justify-center gap-6'>
-            <span>1323{errMsg}</span>
-            <span 
-                className='cursor-pointer' 
-                onClick={() => setErrMsg('')}>
-                    <CiCircleRemove className='text-2xl' />
-            </span>
-        </section>
-      }
         <div className='mx-auto w-[90%] py-[3.5rem]'>
-          
           {/*  */}
           <div className='w-[100%] h-auto pb-[4rem] lg:flex flex-col lg:flex-row gap-6 justify-start items-start'>
             {/* IMAGE */}
@@ -193,22 +175,55 @@ export default function ProductView({ id, fourProducts }){
                 <p className='mb-4'>
                    {product.description}
                 </p>
-                <section className='w-[65%] mt-6 mb-8'>
-                  <h6 className='font-semibold text-sm mb-3'>
-                    {extra.name} ({extra.price ? '$' + (extra.price / 100).toFixed(2) : (0).toFixed(2)} per {extra.quantity} flowers):
-                  </h6>
-                  <select
-                    name='extra_quantity'
-                    value={data.extra_quantity}
-                    onChange={handleInput}
-                    className='w-[100%] border text-lg border-pink-200 outline-none px-3 py-2'>
+                <section className='w-[80%] mb-4'>
+                  <h6 className='font-semibold text-sm mb-1'>Gifts</h6>
+                  <select className='w-[100%] border border-slate-200 outline-none px-3 py-2'>
                     <option value=''>Select an option.</option>
                     {extras().map((item, i) => (
                       <option key={i} value={item}>{item}</option>
-                    ))} 
+                    ))}
+                    
                   </select>
                 </section>
-                
+                {/* Gifts  */}
+                <section className='w-[80%] flex justify-start gap-4 items-start mb-4'>
+                    <div className='w-[60%]'>
+                        <h6 className='font-semibold text-sm mb-1'>Gifts</h6>
+                        {options.map((item, i) => (
+                            <div key={i} className='flex items-center justify-start gap-2 mb-1'>
+                                <input 
+                                  type='radio' 
+                                  name='product_option'
+                                  onChange={(e) => (productDispatch({type: 'ADD_ITEM_OPTION', payload: e.target.value }))}
+                                  value={JSON.stringify({
+                                    id: item.id,
+                                    name: item.name,
+                                    price: item.price,
+                                    quantity: 1,
+                                    total: item.price,
+                                  })} /> 
+                                    <span>{item.name}</span> 
+                                    <span className='font-semibold'>${(item.price / 100).toFixed(2)}</span>
+                            </div>
+                        ))}
+                    
+                    </div>
+                    <div className='w-[40%]'>
+                      { productState.item.product_option !== undefined && 
+                        <>
+                          <h6 className='font-semibold text-sm mb-1'>Quantity</h6>
+                          <input 
+                            type='number' 
+                            min='0'
+                            value={productState.item.product_option.quantity} 
+                            onChange={(e) => productDispatch({type: 'ADD_ITEM_OPTION_QUANTITY', payload: {quantity: e.target.value} })}
+                            className='block text-black bg-slate-100 w-[100%] px-3 py-2 rounded-md outline-none border border-slate-300' 
+                          />
+                        </> 
+                      }
+                        
+                    </div>
+                </section>
             
               
                 {/*  */}
@@ -216,9 +231,8 @@ export default function ProductView({ id, fourProducts }){
                   <section className='w-[80%] flex justify-start gap-4 items-start mb-4'>
                     <input 
                       type='number'
-                      name='product_quantity'
                       min='0' 
-                      onChange={handleInput}
+                      onChange={(e) => productDispatch({type: 'ADD_ITEM_QUANTITY', payload: {quantity: e.target.value,  }})}
                       placeholder='0' 
                       className='w-[30%] block text-black bg-slate-100 px-4 py-5 rounded-md outline-none border border-slate-300' />
                     <button

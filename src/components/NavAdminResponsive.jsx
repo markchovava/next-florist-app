@@ -217,7 +217,7 @@ export default function NavAdminResponsive() {
                             </li>
 
                             {/* PRODUCT OPTION */}
-                            <li className="relative" 
+                            {/* <li className="relative" 
                                 onClick={() => {
                                     setIsSetting(false);
                                     setIsUser(false);
@@ -250,7 +250,7 @@ export default function NavAdminResponsive() {
                                         </motion.ul>
                                     </AnimatePresence> 
                                 }    
-                            </li>
+                            </li> */}
                             {/* ORDER */}
                             <li className="relative"
                                 onClick={() => {

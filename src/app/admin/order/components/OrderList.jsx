@@ -8,6 +8,7 @@ import { BsArrowLeft, BsArrowRight } from 'react-icons/bs'
 import axiosClientAPI from '@/api/axiosClientAPI'
 import { getToken } from '@/api/token';
 import tokenRole from '@/api/tokenRole';
+import tokenAuth from '@/api/tokenAuth';
 
 
 
@@ -16,10 +17,11 @@ export default function OrderList() {
     const [searchSubmit, setSearchSubmit] = useState(false);
     const [data, setData] = useState({});
     const { getRoleToken } = tokenRole();
+    const { getAuthToken } = tokenAuth();
     const config = {
       headers: {
           'Content-Type': 'application/json',
-        'Authorization': `Bearer ${getToken()}`
+        'Authorization': `Bearer ${getAuthToken()}`
     }}
 
     /* PAGINATION */
@@ -83,6 +85,7 @@ export default function OrderList() {
         const result = await axiosClientAPI.get(`order/`, config)
         .then((response) => {
             setData(response.data.data)
+            console.log(response.data.data)
             setPrevURL(response.data.links.prev)
             setNextURL(response.data.links.next)
         })
@@ -97,7 +100,7 @@ export default function OrderList() {
         try{
         const result = await axiosClientAPI.delete(`order/${id}`, config)
         .then((response) => {
-            getData()
+            getData();
         })
         } catch (error) {
             console.error(`Error: ${error}`);
@@ -134,14 +137,14 @@ export default function OrderList() {
                     className='bg-gradient-to-br transition-all duration-150 ease-in rounded-lg text-white from-pink-500 to-red-500 hover:from-pink-500 hover:to-pink-600 px-8 py-3'>
                         Search</button>
                 </div>
-                { getRoleToken() <= 2 &&
+                {/* { getRoleToken() <= 2 &&
                     <div>
                         <Link
                             href='/admin/order/add'
                             className='bg-gradient-to-br transition-all duration-150 ease-in rounded-lg text-white from-pink-500 to-red-500 hover:from-pink-500 hover:to-pink-600 px-8 py-3'>
                             Add</Link>
                     </div>
-                }
+                } */}
             </div>
 
             <section className="w-[100%] lg:overflow-hidden overflow-auto">
@@ -167,13 +170,14 @@ export default function OrderList() {
                                 </span>
                             </div>
                             <div className="w-[30%] p-3 border-l border-slate-300 flex items-center justify-start gap-1">
-                                ${ (item.grandtotal / 100).toFixed(2) } 
+                                { item.order_total ? '$' + (item.order_total / 100).toFixed(2) : (0).toFixed(2) } 
                             </div>
                             <div className="w-[20%] p-3 border-l border-slate-300 flex justify-start items-center gap-3 text-xl">
                                 <Link href={`/admin/order/${item.id}`}> 
                                 <FaEye className='hover:text-blue-500 duration-150 hover:scale-110 transition-all ease-in'/> </Link>
                                 <Link href={`/admin/order/delivery/edit/${item.id}`}> 
-                                <MdEdit className='hover:text-green-500 duration-150 hover:scale-110 transition-all ease-in' /> </Link>
+                                <MdEdit className='hover:text-green-500 duration-150 hover:scale-110 transition-all ease-in' /> 
+                                </Link>
                                 {getRoleToken() <= 2 &&
                                     <button 
                                         onClick={() => {

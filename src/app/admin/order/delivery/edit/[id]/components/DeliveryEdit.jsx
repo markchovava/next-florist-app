@@ -1,6 +1,7 @@
 "use client"
 import axiosClientAPI from '@/api/axiosClientAPI';
 import { getToken } from '@/api/token';
+import tokenAuth from '@/api/tokenAuth';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
 
@@ -12,11 +13,12 @@ export default function DeliveryEdit({ id }) {
     const [isSubmit, setIsSubmit] = useState(false)
     const [data, setData] = useState({})
     const [status, setStatus] = useState({})
+    const { getAuthToken } = tokenAuth();
 
     const config = {
         headers: {
           'Content-Type': 'multipart/form-data',
-          'Authorization': `Bearer ${getToken()}`
+          'Authorization': `Bearer ${getAuthToken()}`
       }}
 
 
