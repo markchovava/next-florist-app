@@ -65,7 +65,7 @@ const HomeSlider = () => {
                   </motion.h1>
                   <div className='flex justify-end'>
                     <Link href='/contact' className='flex justify-center items-center gap-2 drop-shadow-xl group text-white text-lg bg-gradient-to-br from-pink-400 to-red-500 hover:from-pink-500 hover:to-pink-500 py-4 px-6 rounded-lg border border-white'>
-                      Shop Now <BsArrowRight className='transition ease-in-out duration-200 group-hover:translate-x-1' />
+                      Contact Us <BsArrowRight className='transition ease-in-out duration-200 group-hover:translate-x-1' />
                     </Link>
                   </div>
                 </div>

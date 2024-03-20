@@ -91,12 +91,11 @@ const Navigation = () => {
             <ul className="flex items-center justify-center gap-6 py-3">
             <li> <Link href='/'>Home</Link> </li>
             <li> <Link href='/about'>About Us</Link></li>
-            <li> <Link href='/product-all'>All Products</Link></li>
             <li className="relative"> 
-                <Link href='#' 
+                <span 
                 onClick={() => {setIsOccasion(!isOccasion); setIsAccount(false); }} 
-                className={`${isOccasion == true && 'text-yellow-100' } flex items-center justify-center gap-2`}>
-                Flowers <IoChevronDown /></Link>
+                className={`${isOccasion == true && 'text-yellow-100' } cursor-pointer flex items-center justify-center gap-2`}>
+                All Products <IoChevronDown /></span>
                 { isOccasion == true && 
                     <AnimatePresence>
                     <motion.ul
@@ -108,7 +107,7 @@ const Navigation = () => {
                         {categories.length > 0 &&
                             categories.map((item, i) => (
                                 <li key={i} className="w-[100%] px-[0.7rem] h-auto hover:bg-pink-600">
-                                    <Link href={`/category/${item.id}`} className="pb-3 w-[100%]">
+                                    <Link href={`/category-product/${item.id}`} className="pb-3 w-[100%]">
                                         {item.name}</Link>
                                 </li>
                             ))

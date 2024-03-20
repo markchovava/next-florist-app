@@ -15,7 +15,7 @@ import tokenRole from '@/api/tokenRole';
 
 export default function RoleList() {
     const { getAuthToken } = tokenAuth();
-    const { getRole } = tokenRole();
+    const { getRoleToken } = tokenRole();
     const router = useRouter();
     const [search, setSearch] = useState('');
     const [searchSubmit, setSearchSubmit] = useState(false);
@@ -163,7 +163,7 @@ export default function RoleList() {
                             <Link href={`/admin/role/${item.id}`}> 
                                 <FaEye className='hover:text-blue-500 duration-150 hover:scale-110 transition-all ease-in'/> 
                             </Link>
-                            { getRole() <= 1 &&
+                            { getRoleToken() <= 1 &&
                                 <>
                                     <Link href={`/admin/role/edit/${item.id}`}> 
                                         <MdEdit className='hover:text-green-500 duration-150 hover:scale-110 transition-all ease-in' /> 

@@ -2,6 +2,7 @@ import getAppInfo from "@/api/getAppInfo";
 import Link from "next/link";
 import { FaFacebook, FaYoutube, FaInstagram } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
+import Notification from "./Notification";
 
 
 const Footer = async () => {
@@ -33,6 +34,7 @@ const Footer = async () => {
         <div className="mx-auto w-[90%] py-2 flex items-center justify-end">
           <div className="text-sm tracking-wide">This website was developed by Freelance Designers.</div>
         </div>
+        <Notification />
     </section>
   )
 }

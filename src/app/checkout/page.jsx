@@ -9,7 +9,7 @@ import CheckoutEdit from './components/CheckoutEdit'
 
 
 
-const page = () => {
+export default function page() {
   return (
     <div>
         <Header />
@@ -35,7 +35,7 @@ const page = () => {
   )
 }
 
-export default page
+
 
 
 

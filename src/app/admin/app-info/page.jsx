@@ -26,7 +26,7 @@ export default function page() {
                 <GoChevronRight />
                 </li>
                 <li className='flex items-center justify-start gap-1'>
-                <Link href='/order-track/1' className="font-semibold">App Info</Link>
+                <Link href='/admin/app-info' className="font-semibold">App Info</Link>
                 </li>
             </ul>
         </section>

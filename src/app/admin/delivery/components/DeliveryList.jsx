@@ -19,15 +19,14 @@ export default function DeliveryList() {
     const [searchSubmit, setSearchSubmit] = useState(false);
     const [data, setData] = useState({});
     const { getAuthToken } = tokenAuth();
-    const { getRole } = tokenRole();
+    const { getRoleToken } = tokenRole();
 
     const config = {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${getAuthToken()}`
-      }}
+    }}
 
-    
     const [nextURL, setNextURL] = useState()
     const [prevURL, setPrevURL] = useState()
     /* PAGINATION DATA */
@@ -44,8 +43,8 @@ export default function DeliveryList() {
             console.error(`Error Message: ${error.message}`);
             console.error(`Error Response: ${error.response}`);
         }     
-     }
-   
+    }
+
     /* SEARCH DATA*/
     async function searchData() {
         if(search == ''){
@@ -53,7 +52,6 @@ export default function DeliveryList() {
                 const result = await axiosClientAPI.get(`delivery/`, config)
                 .then((response) => {
                     setData(response.data.data)
-                    console.log(response.data.data)
                     setPrevURL(response.data.links.prev)
                     setNextURL(response.data.links.next)
                     setSearch(search)
@@ -84,6 +82,7 @@ export default function DeliveryList() {
           const result = await axiosClientAPI.get(`delivery/`, config)
           .then((response) => {
             setData(response.data.data)
+            console.log(response.data.data)
             setPrevURL(response.data.links.prev)
             setNextURL(response.data.links.next)
           })
@@ -131,7 +130,7 @@ export default function DeliveryList() {
                     className='bg-gradient-to-br transition-all duration-150 ease-in rounded-lg text-white from-pink-500 to-red-500 hover:from-pink-500 hover:to-pink-600 px-8 py-3'>
                         Search</button>
                 </div>
-                { getRole() <= 2 &&
+                { getRoleToken() <= 2 &&
                     <div>
                         <Link 
                             href='/admin/delivery/add' 

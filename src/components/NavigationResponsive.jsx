@@ -108,13 +108,12 @@ export default function NavigationResponsive(){
                 <ul className="flex flex-col items-center justify-center gap-5 pb-3">
                     <li> <Link href='/'>Home</Link> </li>
                     <li> <Link href='/about'>About Us</Link></li>
-                    <li> <Link href='/product-all'>All Products</Link></li>
                     {categories.length > 0 &&
                         <li className="relative"> 
-                            <Link href='#' 
+                            <span
                             onClick={() => {setIsOccasion(!isOccasion); setIsAccount(false); }} 
-                            className={`${isOccasion == true && 'text-yellow-100'} flex items-center justify-center gap-2`}>
-                            Categories <IoChevronDown /></Link>
+                            className={`${isOccasion == true && 'text-yellow-100'} cursor-pointer flex items-center justify-center gap-2`}>
+                            All Products <IoChevronDown /></span>
                             { isOccasion == true && 
                                 <AnimatePresence>
                                 <motion.ul
@@ -126,7 +125,7 @@ export default function NavigationResponsive(){
                                     {categories.length > 0 &&
                                         categories.map((item, i) => (
                                             <li key={i} className="w-[100%] px-[0.7rem] h-auto hover:bg-pink-600">
-                                                <Link href={`/category/${item.id}`} className="pb-3 w-[100%] flex justify-center items-center">
+                                                <Link href={`/category-product/${item.id}`} className="pb-3 w-[100%] flex justify-center items-center">
                                                     {item.name}</Link>
                                             </li>
                                         ))

@@ -1,5 +1,4 @@
 import Header from '@/components/Header'
-import MainTitle from '@/components/MainTitle'
 import AboutContent from './AboutContent'
 import ContactForm from '@/components/ContactForm'
 import Subscribe from '@/components/Subscribe'

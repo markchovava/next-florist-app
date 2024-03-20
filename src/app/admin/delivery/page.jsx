@@ -1,10 +1,9 @@
-
-import Link from 'next/link'
-import Footer from '@/components/Footer'
-import Header from '@/components/Header'
-import { GoChevronRight } from 'react-icons/go'
-import { IoHomeOutline } from 'react-icons/io5'
-import DeliveryList from './components/DeliveryList'
+import { GoChevronRight } from 'react-icons/go';
+import { IoHomeOutline } from 'react-icons/io5';
+import Link from 'next/link';
+import Footer from '@/components/Footer';
+import Header from '@/components/Header';
+import DeliveryList from './components/DeliveryList';
 
 
 

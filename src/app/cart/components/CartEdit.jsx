@@ -1,8 +1,7 @@
 "use client"
 import { baseURL } from '@/api/baseURL';
-import { shoppingSession } from '@/api/shoppingSession';
 import tokenAuth from '@/api/tokenAuth';
-import { CartContextState } from '@/context/CartContext';
+import { tokenShoppingSession } from '@/api/tokenShoppingSession';
 import axios from 'axios';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -18,12 +17,10 @@ export default function CartEdit() {
     const [data, setData] = useState({});
     const [errorMsg, setErrorMsg] = useState('')
     const [isSubmit, setIsSubmit] = useState(false);
-    const {cartState, cartDispatch} = CartContextState();
-    const [options, setOptions] = useState([]);
     const [isDelete, setIsDelete] = useState(false);
-    const { getShoppingSession } = shoppingSession();
+    const { getShoppingSession } = tokenShoppingSession();
     const { getAuthToken } = tokenAuth();
-    const shopping_session = getShoppingSession() ? getShoppingSession() : null;
+    const shopping_session = getShoppingSession() ? getShoppingSession() : '';
 
      
     /* GET DATA */
@@ -31,8 +28,6 @@ export default function CartEdit() {
         try{
           const result = await axios.get(`${baseURL}cart/list?shopping_session=${shopping_session}`)
           .then((response) => {
-            console.log('shopping_session')
-            console.log(response.data)
             setData(response.data)
           })
         } catch (error) {
@@ -48,6 +43,7 @@ export default function CartEdit() {
             setErrorMsg(response.data.message);
             console.log(response.data.message)
             getData();
+            window.location.reload();
             setIsDelete(false);
           })
         } catch (error) {

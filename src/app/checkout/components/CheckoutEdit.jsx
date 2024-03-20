@@ -1,10 +1,8 @@
 "use client";
 import axiosClientAPI from '@/api/axiosClientAPI';
 import { baseURL } from '@/api/baseURL';
-import { shoppingSession } from '@/api/shoppingSession';
-import { getToken } from '@/api/token';
 import tokenAuth from '@/api/tokenAuth';
-import Loader from '@/components/Loader';
+import { tokenShoppingSession } from '@/api/tokenShoppingSession';
 import axios from 'axios';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -22,8 +20,8 @@ export default function CheckoutEdit() {
     const [isSubmit, setIsSubmit] = useState(false);
     const [delivery, setDelivery] = useState([]);
     const { getAuthToken } = tokenAuth()
-    const { getShoppingSession, removeShoppingSession } = shoppingSession();
-    const shopping_session = getShoppingSession() ? getShoppingSession() : null;
+    const { getShoppingSession, removeShoppingSession } = tokenShoppingSession();
+    const shopping_session = getShoppingSession() ? getShoppingSession() : '';
     const [errorMsg, setErrorMsg] = useState({})
 
     const config = {
@@ -38,7 +36,6 @@ export default function CheckoutEdit() {
           const result = await axiosClientAPI.get(`cart/list?shopping_session=${shopping_session}`)
           .then((response) => {
             setData(response.data);
-            console.log(response.data);
           })
         } catch (error) {
             console.error(`Error: ${error}`);
@@ -59,7 +56,7 @@ export default function CheckoutEdit() {
             console.error(`Error Response: ${error.response}`);
         }   
     } 
-    /* GET DELIVERY */
+    /* GET USER */
     async function getUser() {
         try{
           const result = await axiosClientAPI.get(`profile`, config)
@@ -72,7 +69,6 @@ export default function CheckoutEdit() {
             console.error(`Error Response: ${error.response}`);
         }   
     } 
-
 
     async function postData() {
         if(!user?.first_name){
@@ -140,8 +136,7 @@ export default function CheckoutEdit() {
             },
             items: data.cartitems,
         }
-        //console.log('formData');
-        //console.log(formData); 
+
         try{
           const result = await axiosClientAPI.post(`order/all`, formData, config)
           .then((response) => {

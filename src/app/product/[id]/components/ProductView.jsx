@@ -1,10 +1,8 @@
 "use client"
 import { useEffect, useLayoutEffect, useState } from 'react';
 import { baseURL } from '@/api/baseURL';
-
 import { BsArrowRight } from 'react-icons/bs';
 import axios from 'axios';
-import Loader from '@/components/Loader';
 import { ProductContextState } from '@/context/ProductContext';
 import Link from 'next/link';
 import { shoppingSession } from '@/api/shoppingSession';
@@ -164,7 +162,7 @@ export default function ProductView({ id, fourProducts }){
       <section className='w-[100%] h-auto bg-white'>
       {errMsg !== '' &&
         <section className='mx-auto w-[90%] pt-[2rem] text-red-500 text-lg flex items-center justify-center gap-6'>
-            <span>1323{errMsg}</span>
+            <span>{errMsg}</span>
             <span 
                 className='cursor-pointer' 
                 onClick={() => setErrMsg('')}>
