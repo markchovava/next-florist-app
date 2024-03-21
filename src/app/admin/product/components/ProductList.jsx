@@ -169,7 +169,11 @@ export default function ProductList() {
                 { data.length > 0 ? 
                     data.map(item => (
                         <div className="lg:w-[100%] w-[50rem] flex items-center justify-start border border-slate-300 py-3">
-                            <div className="w-[30%] p-3 ">{item.name}</div>
+                            <div className="w-[30%] p-3 flex items-center justify-start gap-3">
+                                {item.name} 
+                                {item.priority && 
+                                    <span className='bg-pink-600 px-2 py-1 text-white'>{item.priority}</span>}
+                                </div>
                             <div className="w-[20%] p-3 border-l border-slate-300">
                                 ${(item.price / 100).toFixed(2)}</div>
                             <div className="w-[30%] p-3 border-l border-slate-300 flex items-center justify-start gap-1">

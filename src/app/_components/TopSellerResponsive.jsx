@@ -13,7 +13,7 @@ import Link from 'next/link';
 
 
 
-export default function TopSellerResponsive({ categoryOneData }) {
+export default function TopSellerResponsive({ topSellingData }) {
 
 
   return (
@@ -27,13 +27,13 @@ export default function TopSellerResponsive({ categoryOneData }) {
             <Swiper
             rewind={true}
             spaceBetween={30}
-            slidesPerView={2}
+            slidesPerView={1}
             navigation
             modules={[Pagination, Navigation]}
             pagination={{clickable: true}}
             className='rounded-lg'>
 
-            {categoryOneData.data.products.map((item, i) => (
+            {topSellingData.data.map((item, i) => (
                 <SwiperSlide key={i}>
                     {/* COL */}
                     <div className='w-[100%] pt-4 pb-5 px-3 bg-white drop-shadow-md'>

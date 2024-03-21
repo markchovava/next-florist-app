@@ -4,12 +4,12 @@ import { IoHomeOutline } from "react-icons/io5";
 import { GoChevronRight } from "react-icons/go";
 import Link from 'next/link';
 import ProductView from './components/ProductView';
-import { getFourProducts } from '@/api/getProducts';
+import { getTopSellingFour } from '@/api/getCategories';
 
 
 
 export default function page({ params: {id} }){
-    const fourProducts = getFourProducts()
+    const fourProducts = getTopSellingFour()
  
   return (
     <div>

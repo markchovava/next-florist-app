@@ -47,11 +47,13 @@ const Register = () => {
         try{
         const result = await axios.post(`${baseURL}register/`, data, config)
         .then((response) => {
-            router.push('/login');      
+            router.push('/login'); 
+            setIsSubmit(false);    
         
         })
         } catch (error) {
-        console.error(`Error: ${error}`)
+            console.error(`Error: ${error}`);
+            setIsSubmit(false); 
         }    
     }  
 
@@ -106,7 +108,7 @@ const Register = () => {
                 <button 
                     onClick={() => setIsSubmit(true)}
                     className='w-[100%] rounded-lg text-white duration-150 ease-out flex items-center justify-center gap-2 py-4 bg-gradient-to-br from-pink-500 to-red-500 hover:from-pink-500 hover:to-pink-600 text-center'>
-                    Submit
+                    {isSubmit == true ? 'Processing' : 'Submit'}
                 </button>
             </div>
         </div>

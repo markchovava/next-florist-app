@@ -31,7 +31,6 @@ const About = () => {
             <h1 className='text-[4rem] font-black pt-[3rem] pb-[1rem]'>About Us</h1>
         </section>
         <AboutContent />
-        <Subscribe />
         <ContactForm />
         <Footer />
     </div>

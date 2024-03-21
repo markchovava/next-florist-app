@@ -23,14 +23,30 @@ export default function ProductAdd() {
         }
     }
 
+    const priorities = () => {
+        let priority  = []
+        for(let i = 1; i <= 20; i++){
+            priority = [...priority, i]
+        }
+        return priority;
+    }
     const handleInput = (e) => {
         setData({...data, [e.target.name]: e.target.value})
     }
 
     /* POST PRODUCT */
   async function postProduct() {
+        const formData = {
+            name: data.name,
+            description: data.description,
+            image: data.image,
+            thumbnail: data.thumbnail,
+            price:data.price,
+            priority:data.priority,
+        };
+        
        try{
-        const result = await axiosClientAPI.post(`product/`, data, config)
+        const result = await axiosClientAPI.post(`product/`, formData, config)
         .then((response) => {
               router.push('/admin/product');
               setIsFormSubmit(false);
@@ -122,6 +138,22 @@ export default function ProductAdd() {
                             name='name' 
                             onChange={handleInput}
                             className='w-[100%] outline-none border border-slate-300 px-3 py-3 rounded-lg'/>
+                    </div> 
+                </div>
+                {/*  */}
+                <div className='flex items-start justify-start gap-3 pb-6'>
+                    <div className='w-[100%]'>
+                        <h6 className='mb-1 text-sm'>Priority:</h6>
+                        <select 
+                            name='priority' 
+                            onChange={handleInput}
+                            className='w-[100%] outline-none border border-slate-300 px-3 py-3 rounded-lg'>
+                                <option value=''>Select an Option.</option>
+                                {priorities().map((item, i) => (
+                                    <option key={i} value={item}> {item}</option>
+
+                                ))}
+                            </select>
                     </div> 
                 </div>
                 {/*  */}

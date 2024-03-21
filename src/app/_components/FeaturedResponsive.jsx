@@ -4,7 +4,7 @@ import { BsArrowRight } from 'react-icons/bs'
 
 
 
-const FeaturedResponsive = async ({ categoryPriorityTwo }) => {
+const FeaturedResponsive = async ({ featuredData }) => {
 
   return (
     <section className='lg:hidden block w-[100%] bg-gray-50 h-auto pt-[4rem] pb-[5rem]'>
@@ -12,11 +12,11 @@ const FeaturedResponsive = async ({ categoryPriorityTwo }) => {
             <h3 className='text-3xl font-black w-[35%]'>Featured Products</h3>
             <hr className='border-b border-pink-200 w-[65%]' />
         </div>
-        <div className='mx-auto container h-auto w-[90%] grid lg:grid-cols-4 grid-cols-2 gap-8'>
+        <div className='mx-auto container h-auto w-[90%] grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-8'>
             
             {/* COL */}
-            {categoryPriorityTwo.data &&
-                categoryPriorityTwo.data.map((item, i) => (
+            {featuredData.data &&
+                featuredData.data.map((item, i) => (
                 <div key={i} className='w-[100%] pt-4 pb-5 px-3 bg-white drop-shadow-md'>
                     <div><h4 className='font-bold text-2xl pb-2'>{item.name}</h4></div>
                     <div className='w-[100%] overflow-hidden aspect-[4/5] rounded bg-white flex items-center justify-center'>

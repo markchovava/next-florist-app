@@ -58,6 +58,11 @@ export default function CategoryView({ id }) {
             </div>
             {/*  */}
             <div className='flex items-center justify-start gap-3 pb-6'>
+                <div className='w-[20%]'>Slug: </div>
+                <div className='w-[80%] font-semibold text-green-800'> {data.slug} </div>
+            </div>
+            {/*  */}
+            <div className='flex items-center justify-start gap-3 pb-6'>
                 <div className='w-[20%]'>Priority: </div>
                 <div className='w-[80%] font-semibold'> {data.priority} </div>
             </div>

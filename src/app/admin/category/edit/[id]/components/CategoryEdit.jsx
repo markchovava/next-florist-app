@@ -34,15 +34,16 @@ export default function CategoryEdit({ id }) {
    
     /* UPDATE DATA */
     async function updateData() {
-        setIsSubmit(false)
         try{
             const result = await axiosClientAPI.put(`category/${id}`, data, config)
             .then((response) => {
                 router.push(`/admin/category/${id}`);
+                setIsSubmit(false);
                 }
             );    
         } catch (error) {
             console.error(`Error: ${error}`);
+            setIsSubmit(false);
         }    
     }
 
@@ -69,6 +70,14 @@ export default function CategoryEdit({ id }) {
                             onChange={(e) => setData({...data, name: e.target.value})}
                             className='w-[100%] outline-none border border-slate-300 px-3 py-3 rounded-lg'/>
                     </div> 
+                    <div className='w-[100%]'>
+                        <h6 className='mb-1 text-sm'>Slug:</h6>
+                        <input type='text'
+                            name='slug' 
+                            value={data.slug}
+                            onChange={(e) => setData({...data, slug: e.target.value})}
+                            className='w-[100%] outline-none border border-slate-300 px-3 py-3 rounded-lg'/>
+                    </div> 
                 </div>
                 {/*  */}
                 <div className='pb-6'>
@@ -83,6 +92,12 @@ export default function CategoryEdit({ id }) {
                             <option value='2' selected={data.priority === 2 && 'selected'}>2</option>
                             <option value='3' selected={data.priority === 3 && 'selected'}>3</option>
                             <option value='4' selected={data.priority === 4 && 'selected'}>4</option>
+                            <option value='5' selected={data.priority === 5 && 'selected'}>5</option>
+                            <option value='6' selected={data.priority === 6 && 'selected'}>6</option>
+                            <option value='7' selected={data.priority === 7 && 'selected'}>7</option>
+                            <option value='8' selected={data.priority === 8 && 'selected'}>8</option>
+                            <option value='9' selected={data.priority === 9 && 'selected'}>9</option>
+                            <option value='10' selected={data.priority === 10 && 'selected'}>10</option>
                         </select>
                     </div>
                 </div>
@@ -94,7 +109,7 @@ export default function CategoryEdit({ id }) {
                             name='description'
                             onChange={(e) => setData({...data, description: e.target.value})}
                             value={data.description}
-                            className='w-[100%] h-[5rem] outline-none border border-slate-300 px-3 py-3 rounded-lg'
+                            className='w-[100%] h-[10rem] outline-none border border-slate-300 px-3 py-3 rounded-lg'
                             ></textarea>
                     </div>
                 </div>
@@ -103,7 +118,8 @@ export default function CategoryEdit({ id }) {
                     <button
                         onClick={() => setIsSubmit(true)}
                         className='py-5 px-12 rounded-lg flex justify-center items-center text-white bg-gradient-to-br from-pink-500 to-red-500 hover:from-pink-500 hover:to-pink-600 duration-150 transition-all'>
-                            Submit</button>
+                            {isSubmit == true ? 'Processing' : 'Submit'}
+                        </button>
                 </div>
             </div>
             

@@ -26,6 +26,14 @@ export default function ProductEdit({ id }) {
         }
     }
 
+    const priorities = () => {
+        let priority  = []
+        for(let i = 1; i <= 20; i++){
+            priority = [...priority, i]
+        }
+        return priority;
+    }
+
     const handleInput = (e) => {
         setData({...data, [e.target.name]: e.target.value})
     }
@@ -48,6 +56,14 @@ export default function ProductEdit({ id }) {
 
     /* POST PRODUCT */
     async function updateData() {
+        const formData = {
+            name: data.name,
+            description: data.description,
+            image: data.image,
+            thumbnail: data.thumbnail,
+            price:data.price,
+            priority:data.priority ? data.priority : '',
+        }
         
         try{
         const result = await axiosClientAPI.post(`product/${id}`, data, config)
@@ -147,6 +163,22 @@ export default function ProductEdit({ id }) {
                         className='w-[100%] outline-none border border-slate-300 px-3 py-3 rounded-lg'/>
                 </div> 
             </div>
+            {/*  */}
+            <div className='flex items-start justify-start gap-3 pb-6'>
+                    <div className='w-[100%]'>
+                        <h6 className='mb-1 text-sm'>Priority:</h6>
+                        <select 
+                            name='priority' 
+                            onChange={handleInput}
+                            className='w-[100%] outline-none border border-slate-300 px-3 py-3 rounded-lg'>
+                                <option value=''>Select an Option.</option>
+                                {priorities().map((item, i) => (
+                                    <option key={i} value={item} selected={item === data.priority ? 'selected' : ''}> {item}</option>
+
+                                ))}
+                            </select>
+                    </div> 
+                </div>
             {/*  */}
             <div className='pb-6'>
                 <div className='w-[100%]'>

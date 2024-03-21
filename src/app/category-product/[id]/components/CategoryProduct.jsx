@@ -150,8 +150,8 @@ export default function CategoryProduct({ id }){
                     progress: undefined,
                     theme: "colored",
                     });
-                window.location.reload();
                 setIsSubmit(false)
+                window.location.reload();
               }
           );    
         } catch (error) {
@@ -213,32 +213,24 @@ export default function CategoryProduct({ id }){
 
   
 
-    {errMsg !== '' &&
-        <section className='mx-auto w-[90%] pt-[2rem] text-red-500 text-lg flex items-center justify-center gap-6'>
-            <span>{errMsg}</span>
-            <span 
-                className='cursor-pointer' 
-                onClick={() => setErrMsg('')}>
-                    <CiCircleRemove className='text-2xl' />
-            </span>
-        </section>
-    }
-
     <section className='w-[100%] h-auto bg-white'>     
         {/*  */}
         {data.length > 0 ?
             data.map((item, i) => (
-            <div key={item.id} className='mx-auto w-[90%] h-auto bg-white lg:rounded-lg lg:drop-shadow-none drop-shadow-lg mb-[4rem] lg:flex flex-col lg:flex-row gap-6 justify-start items-start'>
+            <div key={item.id} className='mx-auto w-[85%] h-auto bg-white lg:rounded-lg lg:drop-shadow-none drop-shadow-lg mb-[6rem] lg:flex flex-col lg:flex-row gap-6 justify-start items-start'>
                 {/* IMAGE */}
-                <div className='lg:w-[45%] w-[100%]'>
-                    <div className='w-[100%] rounded-lg overflow-hidden drop-shadow-lg'>
-                        <div className='w-[100%] aspect-[4/3] rounded-xl overflow-hidden bg-white flex items-center justify-center'>
-                            <img className='object-cover w-[100%] h-[100%]' src={baseURL + item.image} />
+                <div className='lg:w-[50%] w-[100%]'>
+                    <div className='lg:px-[4rem]'>
+                        <div className='w-[100%] rounded-lg overflow-hidden drop-shadow-lg'>
+                            <div className='w-[100%] aspect-[5/4] rounded-xl overflow-hidden bg-white flex items-center justify-center'>
+                                <img className='object-cover w-[100%] h-[100%]' src={baseURL + item.image} />
+                            </div>
                         </div>
+
                     </div>
                 </div>
                 {/* PRODUCT INFO */}
-                <div className='lg:w-[55%] w-[100%] flex flex-col gap-2 p-4'>
+                <div className='lg:w-[50%] w-[100%] flex flex-col items-start justify-center gap-2 p-4'>
                     <h3 className='font-light lg:text-[2.5rem] text-[2rem] lg:text-left'>{item.name}</h3>
                     <h2 className='font-semibold lg:text-[2rem] text-[2.5rem] text-pink-500'>
                         {item.price ? '$' + (item.price / 100).toFixed(2) : (0).toFixed(2)}

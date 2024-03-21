@@ -6,19 +6,19 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import { Pagination, Navigation} from 'swiper/modules';
-import axios from 'axios';
-import { useEffect } from 'react';
 import { baseURL } from '@/api/baseURL';
 import Link from 'next/link';
 import TopSellerResponsive from './TopSellerResponsive';
 
 
 
-export default async function TopSeller({ categoryOne }) {
-    const categoryOneData = await JSON.parse(categoryOne.value);
+export default async function TopSeller({ topSelling }) {
+    const topSellingData = await JSON.parse(topSelling.value);
 
 
   return (
+    <>
+    {topSellingData && 
     <>
         <section className='hidden lg:block w-[100%] bg-white h-auto pt-[4rem] pb-[3rem]'>
             <div className='mx-auto container h-auto w-[90%] flex items-center justify-start pb-8'>
@@ -36,7 +36,7 @@ export default async function TopSeller({ categoryOne }) {
                 pagination={{clickable: true}}
                 className='rounded-lg'>
 
-                {categoryOneData.data.products.map((item, i) => (
+                {topSellingData.data.map((item, i) => (
                     <SwiperSlide key={i}>
                         {/* COL */}
                         <div className='w-[100%] pt-4 pb-5 px-3 bg-white drop-shadow-md'>
@@ -61,7 +61,9 @@ export default async function TopSeller({ categoryOne }) {
                 </Swiper>
             </div>
         </section>
-        <TopSellerResponsive categoryOneData={categoryOneData} />
+        <TopSellerResponsive topSellingData={topSellingData} />
+    </>
+    }
     </>
   )
 }

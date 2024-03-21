@@ -177,7 +177,7 @@ export default function ProductView({ id, fourProducts }){
             {/* IMAGE */}
             <div className='lg:w-[40%] w-[100%]'>
                 <div className='w-[100%] rounded-lg overflow-hidden drop-shadow-lg'>
-                  <div className='w-[100%] aspect-[1/1] rounded-xl overflow-hidden bg-white flex items-center justify-center'>
+                  <div className='w-[100%] aspect-[5/4] rounded-xl overflow-hidden bg-white flex items-center justify-center'>
                       <img className='object-cover w-[100%] h-[100%]' src={baseURL + product.image} />
                   </div>
                 </div>
@@ -193,7 +193,7 @@ export default function ProductView({ id, fourProducts }){
                 </p>
                 <section className='w-[65%] mt-6 mb-8'>
                   <h6 className='font-semibold text-sm mb-3'>
-                    {extra.name} ({extra.price ? '$' + (extra.price / 100).toFixed(2) : (0).toFixed(2)} per {extra.quantity} flowers):
+                    {extra.name} ({extra.price ? '$' + (extra.price / 100).toFixed(2) : (0).toFixed(2)} per 1 flower starting from {extra.quantity} flowers):
                   </h6>
                   <select
                     name='extra_quantity'

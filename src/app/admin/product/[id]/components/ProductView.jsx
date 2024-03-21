@@ -89,6 +89,11 @@ export default function ProductView({ id }) {
                     <div className='w-[20%]'>Name: </div>
                     <div className='w-[80%] font-semibold'> {data.name} </div>
                 </div>
+                {/* PRIORITY */}
+                <div className='flex items-center justify-start gap-3 pb-6'>
+                    <div className='w-[20%]'>Priority: </div>
+                    <div className='w-[80%] font-semibold'> {data.priority} </div>
+                </div>
                 {/*  */}
                 <div className='flex items-center justify-start gap-3 pb-6'>
                     <div className='w-[20%]'>Description: </div>

@@ -1,5 +1,5 @@
 import { baseURL } from '@/api/baseURL';
-import { getCategoryPriorityTwo } from '@/api/getCategories';
+import { getFeaturedProducts } from '@/api/getCategories';
 import Link from 'next/link';
 import { BsArrowRight } from 'react-icons/bs'
 import FeaturedResponsive from './FeaturedResponsive';
@@ -7,7 +7,7 @@ import FeaturedResponsive from './FeaturedResponsive';
 
 
 const Featured = async () => {
-    const categoryPriorityTwo = await getCategoryPriorityTwo();
+    const featuredData = await getFeaturedProducts();
 
   return (
     <>
@@ -19,8 +19,8 @@ const Featured = async () => {
             <div className='mx-auto container h-auto w-[90%] grid grid-cols-4 gap-8'>
                 
                 {/* COL */}
-                {categoryPriorityTwo.data &&
-                    categoryPriorityTwo.data.map((item, i) => (
+                {featuredData.data &&
+                    featuredData.data.map((item, i) => (
                     <div key={i} className='w-[100%] pt-4 pb-5 px-3 bg-white drop-shadow-md'>
                         <div>
                             <h4 className='font-bold text-xl pb-2'>
@@ -42,7 +42,7 @@ const Featured = async () => {
             
             </div>
         </section>
-        <FeaturedResponsive categoryPriorityTwo={categoryPriorityTwo} />
+        <FeaturedResponsive featuredData={featuredData} />
     </>
   )
 }
