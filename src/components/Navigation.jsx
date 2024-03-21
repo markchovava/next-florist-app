@@ -4,11 +4,10 @@ import  tokenRole  from '@/api/tokenRole';
 import axios from 'axios';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
-import { redirect, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
 import { IoChevronDown } from 'react-icons/io5';
 import { MdOutlineShoppingCart } from 'react-icons/md';
-import Loader from './Loader';
 import { baseURL } from '@/api/baseURL';
 import tokenAuth from '@/api/tokenAuth';
 import { tokenShoppingSession } from '@/api/tokenShoppingSession';
@@ -37,16 +36,17 @@ const Navigation = () => {
     
     /* LOGOUT */
     async function postLogout() {
-        setIsLogout(false) ;
         try{
         const result = await axiosClientAPI.get(`logout/`, config)
             .then((response) => {
                 removeAuthToken();
                 removeRoleToken();
                 router.push(`/login`);
+                setIsLogout(false) ;
             })
         } catch (error) {
-            console.error(`Error: ${error}`)
+            console.error(`Error: ${error}`);
+            setIsLogout(false) ;
         } 
     } 
     /* CATEGORIES */
@@ -143,7 +143,11 @@ const Navigation = () => {
                 }
             </li>
                 { typeof getAuthToken() === 'string' ? 
-                    <li> <button onClick={() => setIsLogout(true)} >Logout </button> </li> 
+                    <li> 
+                        <button onClick={() => setIsLogout(true)} >
+                        {isLogout === true ? 'Processing' : 'Logout' } 
+                        </button> 
+                    </li> 
                     : 
                     <li> <Link href='/login'>Login </Link> </li>
                 } 
