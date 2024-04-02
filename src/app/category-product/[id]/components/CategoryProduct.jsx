@@ -116,8 +116,12 @@ export default function CategoryProduct({ id }){
     async function postData() {
         const shopping_session = getShoppingSession() ? getShoppingSession() : null;
         const productData = categoryProductState.product;
-        const formData = {...productData, shopping_session: shopping_session};
-        console.log(productData);
+        const formData = {
+            ...productData, 
+            shopping_session: shopping_session,
+            extra_total: Number(productData.extra_price) * Number(productData.extra_quantity),
+        };
+        console.log(formData);
         if(!categoryProductState.product.product_quantity){
             toast.error('You are required to add Quantity on your Product.', {
                 position: "top-right",
@@ -132,26 +136,16 @@ export default function CategoryProduct({ id }){
             setIsSubmit(false)
             return;
         }
-      
-      try{
+        try{
           const result = await axios.post(`${baseURL}cart/`, formData)
           .then((response) => {
                 if(response.data.shopping_session){
                     setShoppingSession(response.data.shopping_session)
                 }
                 categoryProductDispatch({type: 'EMPTY_PRODUCT'})
-                toast.success('Added to Cart successfully.', {
-                    position: "top-right",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "colored",
-                    });
                 setIsSubmit(false)
-                window.location.reload();
+                router.push('/cart');
+                //window.location.reload();
               }
           );    
         } catch (error) {
@@ -159,7 +153,7 @@ export default function CategoryProduct({ id }){
             console.error(`Error Message: ${error.message}`);
             console.error(`Error Response: ${error.response}`);
             setIsSubmit(false)
-        }
+        } 
 
     }
 

@@ -148,7 +148,12 @@ const Contact = () => {
                 </div>
             </section>
             <section className='w-[100%] h-[30rem] bg-slate-300 flex items-center justify-center'>
-                    Google Maps coming soon.
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3798.432852325563!2d31.032515074417297!3d-17.818332476039224!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1931a500760b2315%3A0x5c82eb6ec92acf8a!2sRiver%20Range%20Flower%20and%20Gift%20Shop!5e0!3m2!1sen!2szw!4v1711433870574!5m2!1sen!2szw" 
+                style={{border:0, width:'100%', height:'100%'}} 
+                allowfullscreen="" 
+                loading="lazy" 
+                referrerpolicy="no-referrer-when-downgrade">  
+            </iframe>
             </section>
             <Footer />
         </div>

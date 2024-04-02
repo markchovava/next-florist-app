@@ -46,9 +46,10 @@ export default function CheckoutEdit() {
     /* GET DELIVERY */
     async function getDelivery() {
         try{
-          const result = await axios.get(`${baseURL}delivery/all`)
+          const result = await axios.get(`${baseURL}delivery`)
           .then((response) => {
             setDelivery(response.data.data);
+            console.log(response.data);
           })
         } catch (error) {
             console.error(`Error: ${error}`);

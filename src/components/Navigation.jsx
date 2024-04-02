@@ -95,7 +95,7 @@ const Navigation = () => {
                 <span 
                 onClick={() => {setIsOccasion(!isOccasion); setIsAccount(false); }} 
                 className={`${isOccasion == true && 'text-yellow-100' } cursor-pointer flex items-center justify-center gap-2`}>
-                All Products <IoChevronDown /></span>
+                Shop By Category <IoChevronDown /></span>
                 { isOccasion == true && 
                     <AnimatePresence>
                     <motion.ul
@@ -120,10 +120,10 @@ const Navigation = () => {
            
             <li> <Link href='/contact'>Contact Us </Link> </li>   
             <li className="relative"> 
-                <Link href='' 
+                <span 
                 onClick={() => {setIsAccount(!isAccount); setIsOccasion(false);}} 
-                className={`${isAccount == true && 'text-yellow-100' } flex items-center justify-center gap-2`}>
-                My Account <IoChevronDown /></Link>
+                className={`${isAccount == true && 'text-yellow-100' } cursor-pointer flex items-center justify-center gap-2`}>
+                My Account <IoChevronDown /></span>
                 {isAccount == true && 
                     <AnimatePresence>
                     <motion.ul
